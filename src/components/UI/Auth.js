@@ -1,7 +1,7 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Layout } from "antd";
+import { Layout } from "antd";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const Auth = (props) => {
   return (
@@ -10,7 +10,8 @@ const Auth = (props) => {
         width={(window.innerWidth * 2) / 3}
         style={{
           height: window.innerHeight,
-          backgroundImage: "url(https://picsum.photos/500)",
+          backgroundImage: "url(https://picsum.photos/1000)",
+          backgroundSize: "100%",
         }}
       ></Sider>
       <Content>{props.children}</Content>
