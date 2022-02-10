@@ -9,6 +9,8 @@ import {
 } from "@ant-design/icons";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import { connect } from "react-redux";
+import { loginAction } from "../../redux/actions/taskAction";
 
 const Login = (props) => {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
@@ -88,11 +90,11 @@ const LoginWithFormik = withFormik({
     password: Yup.string().min(6, "Password must has at least 6 characters"),
   }), //validate from field
 
-  handleSubmit: (values, { setSubmitting }) => {
-    console.log(values);
+  handleSubmit: (values, { props, setSubmitting }) => {
+    props.dispatch(loginAction(values.email, values.password));
   },
 
   displayName: "Login",
 })(Login);
 
-export default LoginWithFormik;
+export default connect()(LoginWithFormik); //LoginWithFormik will have props of redux
