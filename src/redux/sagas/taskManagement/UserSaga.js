@@ -1,4 +1,11 @@
-import { call, delay, takeEvery, takeLatest, put } from "redux-saga/effects";
+import {
+  call,
+  delay,
+  takeEvery,
+  takeLatest,
+  put,
+  select,
+} from "redux-saga/effects";
 import { USER_LOGIN_API } from "../../consts/taskManagement/index";
 import { taskService } from "../../../services/taskService";
 import { TOKEN, USER_LOGIN } from "../../../utils/settingSystem";
@@ -16,8 +23,9 @@ function* loginSaga(action) {
     localStorage.setItem(USER_LOGIN, JSON.stringify(data.content));
 
     console.log(data);
-    console.log(history);
-    history.push("/");
+    //~useSelector
+    const navigate = yield select((state) => state.navigateReducer.navigate);
+    navigate("/");
   } catch (err) {
     console.log(err.response.data);
   }
