@@ -9,6 +9,7 @@ import {
 import { USER_LOGIN_API } from "../../consts/taskManagement/index";
 import { taskService } from "../../../services/taskService";
 import { TOKEN, USER_LOGIN } from "../../../utils/settingSystem";
+import { LOGGED_USER } from "../../consts/taskManagement/index";
 
 //Manage saga action
 function* loginSaga(action) {
@@ -21,6 +22,11 @@ function* loginSaga(action) {
     //Save on local storage
     localStorage.setItem(TOKEN, data.content.accessToken);
     localStorage.setItem(USER_LOGIN, JSON.stringify(data.content));
+
+    yield put({
+      type: LOGGED_USER,
+      userLogin: data.content,
+    });
 
     console.log(data);
     //~useSelector
