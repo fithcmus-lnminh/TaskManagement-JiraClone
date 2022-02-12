@@ -21,9 +21,7 @@ const Auth = (props) => {
         width={(size.width * 2) / 3}
         style={{
           height: size.height,
-          backgroundImage: `url(https://picsum.photos/${Math.round(
-            (size.width * 2) / 3
-          )}/${size.height})`,
+          backgroundImage: `url(https://picsum.photos/1000)`,
           backgroundSize: "100%",
         }}
       ></Sider>

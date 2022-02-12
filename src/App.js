@@ -5,6 +5,7 @@ import "antd/dist/antd.min.css";
 import Login from "./components/Auth/Login";
 import Home from "./components/Home";
 import { useDispatch } from "react-redux";
+import ProjectSettings from "./components/Jira/ProjectSettings";
 
 function App() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/projectsettings" element={<ProjectSettings />} />
       </Routes>
     </>
   );
