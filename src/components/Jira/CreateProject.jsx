@@ -12,17 +12,22 @@ const CreateProject = (props) => {
     (state) => state.ProjectCategoryReducer.categoryArr
   );
 
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = props;
 
   useEffect(() => {
     dispatch({ type: "GET_ALL_CATEGORY_SAGA" });
   }, []);
 
   const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
+    setFieldValue("description", editorRef.current.getContent());
   };
 
   return (
@@ -48,7 +53,11 @@ const CreateProject = (props) => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="projectName">Name</label>
-            <input className="form-control" name="projectName" />
+            <input
+              className="form-control"
+              name="projectName"
+              onChange={handleChange}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="description">Description</label>
@@ -99,18 +108,27 @@ const CreateProject = (props) => {
 };
 
 const CreateProjectWithFormik = withFormik({
-  mapPropsToValues: () => ({
-    projectName: "",
-    description: "",
-    categoryId: "",
-  }),
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    return {
+      projectName: "",
+      description: "",
+      categoryId: props.categoryArr[0]?.id,
+    };
+  },
 
   //validatate input values
   validationSchema: Yup.object().shape({}),
 
-  handleSubmit: (values, { props, setSubmitting }) => {},
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log(values);
+  },
 
   displayName: "CreateProjectFormik",
 })(CreateProject);
 
-export default connect()(CreateProjectWithFormik);
+const mapStateToProps = (state) => ({
+  categoryArr: state.ProjectCategoryReducer.categoryArr,
+});
+
+export default connect(mapStateToProps)(CreateProjectWithFormik);
