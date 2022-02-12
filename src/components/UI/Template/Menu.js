@@ -19,16 +19,20 @@ const Menu = () => {
       <div className="control">
         <div>
           <i className="fa fa-credit-card" />
-          <NavLink to="/" style={{ color: "black" }}>
+          <NavLink
+            to="/"
+            style={{ color: "black" }}
+            className={(navData) => (navData.isActive ? "active" : "")}
+          >
             {" "}
             Main Board
           </NavLink>
         </div>
         <div>
-          <i className="fa fa-cog" />
-          <NavLink to="/projectsettings" style={{ color: "black" }}>
+          <i className="fa fa-plus" />
+          <NavLink to="/create-project" style={{ color: "black" }}>
             {" "}
-            Project Settings
+            Create Project
           </NavLink>
         </div>
       </div>

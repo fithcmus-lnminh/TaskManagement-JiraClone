@@ -1,10 +1,14 @@
-html {
-  font-family: "Poppins", sans-serif;
+.active {
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: rgb(7, 71, 166);
 }
 
 .jira {
   height: 100vh;
-  font-family: "Roboto", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 300;
   display: flex;
 }
@@ -14,7 +18,7 @@ html {
   position: fixed;
   height: 100vh;
   z-index: 10;
-  background-color: #065fd4;
+  background-color: rgb(7, 71, 166);
   width: 4%;
   transition: 0.3s;
 }

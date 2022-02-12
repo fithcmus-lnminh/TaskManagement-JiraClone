@@ -23,10 +23,16 @@ const ContentMain = () => {
               <div className="block-right">
                 <div className="avatar-group" style={{ display: "flex" }}>
                   <div className="avatar">
-                    <img src="./assets/img/download (1).jfif" alt />
+                    <img
+                      src={require("../../../../assets/img/download (1).jfif")}
+                      alt
+                    />
                   </div>
                   <div className="avatar">
-                    <img src="./assets/img/download (2).jfif" alt />
+                    <img
+                      src={require("../../../../assets/img/download (2).jfif")}
+                      alt
+                    />
                   </div>
                 </div>
               </div>
@@ -44,10 +50,16 @@ const ContentMain = () => {
               <div className="block-right">
                 <div className="avatar-group" style={{ display: "flex" }}>
                   <div className="avatar">
-                    <img src="./assets/img/download (1).jfif" alt />
+                    <img
+                      src={require("../../../../assets/img/download (1).jfif")}
+                      alt
+                    />
                   </div>
                   <div className="avatar">
-                    <img src="./assets/img/download (2).jfif" alt />
+                    <img
+                      src={require("../../../../assets/img/download (2).jfif")}
+                      alt
+                    />
                   </div>
                 </div>
               </div>
