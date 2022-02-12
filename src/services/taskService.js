@@ -9,4 +9,10 @@ export const taskService = {
       data: userInfo,
     });
   },
+  getAllProjectCategory: () => {
+    return Axios({
+      url: `${DOMAIN}/ProjectCategory`,
+      method: "GET",
+    });
+  },
 };

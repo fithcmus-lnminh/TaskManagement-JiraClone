@@ -1,9 +1,24 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Index from "../UI/Index";
 import { Editor } from "@tinymce/tinymce-react";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { withFormik } from "formik";
+import * as Yup from "yup";
 
-const CreateProject = () => {
+const CreateProject = (props) => {
   const editorRef = useRef(null);
+  const dispatch = useDispatch();
+  const categoryArr = useSelector(
+    (state) => state.ProjectCategoryReducer.categoryArr
+  );
+
+  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+    props;
+
+  useEffect(() => {
+    dispatch({ type: "GET_ALL_CATEGORY_SAGA" });
+  }, []);
+
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
@@ -30,7 +45,7 @@ const CreateProject = () => {
         <h3 className="" style={{ fontWeight: "bold" }}>
           Create Project
         </h3>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="projectName">Name</label>
             <input className="form-control" name="projectName" />
@@ -60,11 +75,18 @@ const CreateProject = () => {
           </div>
           <div className="form-group">
             <label htmlFor="categoryId">Category</label>
-            <select name="categoryId" className="form-control">
-              <option>Software</option>
-              <option>Website</option>
-              <option>Game</option>
-              <option>Mobile</option>
+            <select
+              name="categoryId"
+              className="form-control"
+              onChange={handleChange}
+            >
+              {categoryArr.map((item, index) => {
+                return (
+                  <option value={item.id} key={index}>
+                    {item.projectCategoryName}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <button onClick={log} type="submit" className="btn btn-primary mt-3">
@@ -76,4 +98,19 @@ const CreateProject = () => {
   );
 };
 
-export default CreateProject;
+const CreateProjectWithFormik = withFormik({
+  mapPropsToValues: () => ({
+    projectName: "",
+    description: "",
+    categoryId: "",
+  }),
+
+  //validatate input values
+  validationSchema: Yup.object().shape({}),
+
+  handleSubmit: (values, { props, setSubmitting }) => {},
+
+  displayName: "CreateProjectFormik",
+})(CreateProject);
+
+export default connect()(CreateProjectWithFormik);

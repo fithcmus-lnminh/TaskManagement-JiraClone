@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import { rootSaga } from "./sagas/rootSaga";
 import { navigateReducer } from "./reducers/navigateReducer";
 import { userReducer } from "./reducers/userReducer";
+import { ProjectCategoryReducer } from "./reducers/projectCategoryReducer";
 
 const middlewareSaga = createSagaMiddleware();
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   //Reducers
   navigateReducer,
   userReducer,
+  ProjectCategoryReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(middlewareSaga));

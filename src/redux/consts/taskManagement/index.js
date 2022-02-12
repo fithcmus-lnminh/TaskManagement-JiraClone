@@ -1,2 +1,4 @@
 export const USER_LOGIN_API = "USER_LOGIN_API";
-export const LOGGED_USER = "LOGGED_USER"
+export const LOGGED_USER = "LOGGED_USER";
+export const GET_ALL_CATEGORY = "GET_ALL_CATEGORY";
+export const GET_ALL_CATEGORY_SAGA = "GET_ALL_CATEGORY_SAGA";
