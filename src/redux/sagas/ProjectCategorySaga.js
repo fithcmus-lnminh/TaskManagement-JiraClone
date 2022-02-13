@@ -8,7 +8,7 @@ import {
 //Manage saga action
 function* ProjectCategorySaga(action) {
   //Call API
-  const { data, response } = yield call(() =>
+  const { data, status } = yield call(() =>
     taskService.getAllProjectCategory()
   );
 

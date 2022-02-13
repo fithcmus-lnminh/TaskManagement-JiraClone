@@ -4,6 +4,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import { CREATE_PROJECT_SAGA } from "../../redux/consts/taskManagement";
 
 const CreateProject = (props) => {
   const editorRef = useRef(null);
@@ -121,7 +122,10 @@ const CreateProjectWithFormik = withFormik({
   validationSchema: Yup.object().shape({}),
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(values);
+    props.dispatch({
+      type: CREATE_PROJECT_SAGA,
+      newProject: values,
+    });
   },
 
   displayName: "CreateProjectFormik",

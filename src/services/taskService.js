@@ -15,4 +15,11 @@ export const taskService = {
       method: "GET",
     });
   },
+  createProject: (model) => {
+    return Axios({
+      url: `${DOMAIN}/Project/createProject`,
+      method: "POST",
+      data: model,
+    });
+  },
 };
