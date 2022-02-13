@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Index from "../UI/Index";
-import { Table, Button, Space, Tag } from "antd";
-import parse from "html-react-parser";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Table, Button, Space, Tag, Input } from "antd";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { GET_LIST_PROJECT_SAGA } from "../../redux/consts/taskManagement";
+import Highlighter from "react-highlight-words";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
+  });
+  const [searchState, setSearchState] = useState({
+    searchText: "",
+    searchedColumn: "",
   });
 
   const projectList = useSelector((state) => state.projectReducer.projectList);
@@ -19,6 +27,84 @@ const ProjectManagement = () => {
     dispatch({ type: GET_LIST_PROJECT_SAGA });
   }, []);
 
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchState({ searchText: "" });
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchState.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchState.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
   const handleChange = (pagination, filters, sorter) => {
     setState({
       filteredInfo: filters,
@@ -26,8 +112,11 @@ const ProjectManagement = () => {
     });
   };
 
-  const clearFilters = () => {
-    setState({ filteredInfo: null });
+  const clearSeaching = () => {
+    setSearchState({
+      searchText: null,
+      searchedColumn: null,
+    });
   };
 
   const clearAll = () => {
@@ -68,6 +157,7 @@ const ProjectManagement = () => {
         a.projectName.toLowerCase() < b.projectName.toLowerCase() ? -1 : 1,
       sortOrder: sortedInfo.columnKey === "projectName" && sortedInfo.order,
       ellipsis: true,
+      ...getColumnSearchProps("projectName"),
     },
     {
       title: "Creator",
@@ -91,6 +181,7 @@ const ProjectManagement = () => {
         a.categoryName.toLowerCase() < b.categoryName.toLowerCase() ? -1 : 1,
       sortOrder: sortedInfo.columnKey === "categoryName" && sortedInfo.order,
       ellipsis: true,
+      ...getColumnSearchProps("categoryName"),
     },
     {
       title: "Action",
@@ -130,9 +221,7 @@ const ProjectManagement = () => {
           Project Management
         </h3>
         <Space style={{ marginBottom: 16 }}>
-          <Button onClick={setAgeSort}>Sort age</Button>
-          <Button onClick={clearFilters}>Clear filters</Button>
-          <Button onClick={clearAll}>Clear filters and sorters</Button>
+          <Button onClick={clearAll}>Clear sorters</Button>
         </Space>
         <Table
           columns={columns}
