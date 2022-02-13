@@ -1,133 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Index from "../UI/Index";
-import { Table, Button, Space } from "antd";
+import { Table, Button, Space, Tag } from "antd";
 import parse from "html-react-parser";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
-const data = [
-  {
-    members: [],
-    creator: {
-      id: 1189,
-      name: "string",
-    },
-    id: 3270,
-    projectName: "ngocdon",
-    description: "<p>fhjhfjhfjdfdf</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "ngocdon",
-    deleted: false,
-  },
-  {
-    members: [],
-    creator: {
-      id: 1195,
-      name: "dungpv",
-    },
-    id: 3271,
-    projectName: "Khóa 4: Bài tập Jira clone: comment, user",
-    description:
-      "<p>1 - Chức năng comment task (Th&ecirc;m, Sửa, X&oacute;a)<br />2 - Chức năng đăng k&yacute; v&agrave; quản l&yacute; người d&ugrave;ng<br />&nbsp; &nbsp; + Đăng k&yacute; - signup (C&oacute; valid)<br />&nbsp; &nbsp; + Quản l&yacute; người d&ugrave;ng (t&igrave;m kiếm, th&ecirc;m, sửa, x&oacute;a)</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "khoa-4-bai-tap-jira-clone-comment-user",
-    deleted: false,
-  },
-  {
-    members: [
-      {
-        userId: 1239,
-        name: "handsomethanh",
-        avatar: "https://ui-avatars.com/api/?name=handsomethanh",
-      },
-      {
-        userId: 1066,
-        name: "Thoa Nguyen",
-        avatar: "https://ui-avatars.com/api/?name=Thoa Nguyen",
-      },
-    ],
-    creator: {
-      id: 1239,
-      name: "handsomethanh",
-    },
-    id: 3277,
-    projectName: "DEMO",
-    description: "<p>ahihi</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "demo",
-    deleted: false,
-  },
-  {
-    members: [
-      {
-        userId: 1278,
-        name: "nguyenthimon",
-        avatar: "https://ui-avatars.com/api/?name=nguyenthimon",
-      },
-    ],
-    creator: {
-      id: 1189,
-      name: "string",
-    },
-    id: 3278,
-    projectName: "thimon",
-    description: "<p>hihiihh</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "thimon",
-    deleted: false,
-  },
-  {
-    members: [],
-    creator: {
-      id: 1255,
-      name: "zeloff",
-    },
-    id: 3279,
-    projectName: "what your name",
-    description: "<p>hỏi t&ecirc;n bạn l&agrave; g&igrave;</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "what-your-name",
-    deleted: false,
-  },
-  {
-    members: [],
-    creator: {
-      id: 827,
-      name: "Tien Doaasd12344adf",
-    },
-    id: 3280,
-    projectName: "zvzvvz",
-    description: "<p>&acirc;fafafa</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "zvzvvz",
-    deleted: false,
-  },
-  {
-    members: [],
-    creator: {
-      id: 1270,
-      name: "Lê Nhật Minh",
-    },
-    id: 3281,
-    projectName: "NEW PROJECT",
-    description: "<p>abcxyz</p>",
-    categoryId: 1,
-    categoryName: "Dự án web",
-    alias: "new-project",
-    deleted: false,
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+import { GET_LIST_PROJECT_SAGA } from "../../redux/consts/taskManagement";
 
 const ProjectManagement = () => {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
   });
+
+  const projectList = useSelector((state) => state.projectReducer.projectList);
+
+  useEffect(() => {
+    dispatch({ type: GET_LIST_PROJECT_SAGA });
+  }, []);
 
   const handleChange = (pagination, filters, sorter) => {
     setState({
@@ -165,27 +55,42 @@ const ProjectManagement = () => {
       dataIndex: "id",
       key: "id",
       width: "10%",
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortOrder: sortedInfo.columnKey === "name" && sortedInfo.order,
+      sorter: (a, b) => a.id - b.id,
+      sortOrder: sortedInfo.columnKey === "id" && sortedInfo.order,
       ellipsis: true,
     },
     {
       title: "Project Name",
       dataIndex: "projectName",
       key: "projectName",
-      width: "35%",
-      sorter: (a, b) => a.age - b.age,
-      sortOrder: sortedInfo.columnKey === "age" && sortedInfo.order,
+      width: "20%",
+      sorter: (a, b) =>
+        a.projectName.toLowerCase() < b.projectName.toLowerCase() ? -1 : 1,
+      sortOrder: sortedInfo.columnKey === "projectName" && sortedInfo.order,
       ellipsis: true,
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      sorter: (a, b) => a.age - b.age,
-      sortOrder: sortedInfo.columnKey === "age" && sortedInfo.order,
+      title: "Creator",
+      dataIndex: "creator",
+      key: "creator",
+      width: "15%",
+      sorter: (a, b) =>
+        a.creator.name.toLowerCase() < b.creator.name.toLowerCase() ? -1 : 1,
+      sortOrder: sortedInfo.columnKey === "creator" && sortedInfo.order,
       ellipsis: true,
-      render: (text, order, index) => <div>{parse(text)}</div>,
+      render: (text, record, index) => (
+        <Tag color="geekblue">{record.creator.name}</Tag>
+      ),
+    },
+    {
+      title: "Category",
+      dataIndex: "categoryName",
+      key: "categoryName",
+      width: "15%",
+      sorter: (a, b) =>
+        a.categoryName.toLowerCase() < b.categoryName.toLowerCase() ? -1 : 1,
+      sortOrder: sortedInfo.columnKey === "categoryName" && sortedInfo.order,
+      ellipsis: true,
     },
     {
       title: "Action",
@@ -207,7 +112,7 @@ const ProjectManagement = () => {
   return (
     <Index>
       <div className="container">
-        <div className="header mt-4">
+        <div className="header mt-1">
           <nav aria-label="breadcrumb">
             <ol
               className="breadcrumb pl-0 mb-0"
@@ -232,8 +137,9 @@ const ProjectManagement = () => {
         <Table
           columns={columns}
           rowKey={"id"}
-          dataSource={data}
+          dataSource={projectList}
           onChange={handleChange}
+          pagination={{ pageSize: 5 }}
         />
       </div>
     </Index>

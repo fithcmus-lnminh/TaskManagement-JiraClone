@@ -30,4 +30,11 @@ export const taskService = {
       headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) }, //JWT
     });
   },
+  getListProject: () => {
+    return Axios({
+      url: `${DOMAIN}/Project/getAllProject`,
+      method: "GET",
+      headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) }, //must login
+    });
+  },
 };
