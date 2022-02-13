@@ -35,6 +35,13 @@ const Menu = () => {
             Create Project
           </NavLink>
         </div>
+        <div>
+          <i className="fa fa-cog" />
+          <NavLink to="/project-management" style={{ color: "black" }}>
+            {" "}
+            Manage Project
+          </NavLink>
+        </div>
       </div>
       <div className="feature">
         <div>

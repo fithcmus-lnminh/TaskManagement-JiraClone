@@ -6,6 +6,7 @@ import Login from "./components/Auth/Login";
 import Home from "./components/Home";
 import { useDispatch } from "react-redux";
 import CreateProject from "./components/Jira/CreateProject";
+import ProjectManagement from "./components/Jira/ProjectManagement";
 
 function App() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create-project" element={<CreateProject />} />
+        <Route path="/project-management" element={<ProjectManagement />} />
       </Routes>
     </>
   );
