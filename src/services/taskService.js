@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { DOMAIN } from "../utils/settingSystem";
+import { DOMAIN, TOKEN } from "../utils/settingSystem";
 
 export const taskService = {
   login: (userInfo) => {
@@ -20,6 +20,14 @@ export const taskService = {
       url: `${DOMAIN}/Project/createProject`,
       method: "POST",
       data: model,
+    });
+  },
+  createProjectWithAuthorization: (model) => {
+    return Axios({
+      url: `${DOMAIN}/Project/createProjectAuthorize`,
+      method: "POST",
+      data: model,
+      headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) }, //JWT
     });
   },
 };

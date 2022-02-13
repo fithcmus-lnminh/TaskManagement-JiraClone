@@ -7,7 +7,7 @@ function* createProject(action) {
   //Call API
   try {
     const { data, status } = yield call(() =>
-      taskService.createProject(action.newProject)
+      taskService.createProjectWithAuthorization(action.newProject)
     );
     console.log(data);
   } catch (err) {
