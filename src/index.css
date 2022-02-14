@@ -13,6 +13,11 @@
   display: flex;
 }
 
+.ant-layout-sider-collapsed {
+  min-width: 3.5rem !important;
+  max-width: 3.5rem !important;
+}
+
 /* Sider Bar */
 .sideBar {
   position: fixed;
@@ -96,8 +101,8 @@
 /* Menu */
 .menu {
   height: 100%;
-  width: 14.5%;
-  margin-left: 4%;
+  min-width: 14.5%;
+  max-width: 14.5%;
   background-color: #f4f5f7;
 }
 
