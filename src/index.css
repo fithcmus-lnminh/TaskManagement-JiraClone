@@ -98,6 +98,11 @@
   height: 30px;
 }
 
+.ant-layout-sider-dark,
+.ant-menu {
+  background-color: rgb(7, 71, 166) !important;
+}
+
 /* Menu */
 .menu {
   height: 100%;
