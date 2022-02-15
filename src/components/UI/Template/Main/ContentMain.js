@@ -25,13 +25,11 @@ const ContentMain = () => {
                   <div className="avatar">
                     <img
                       src={require("../../../../assets/img/download (1).jfif")}
-                      alt
                     />
                   </div>
                   <div className="avatar">
                     <img
                       src={require("../../../../assets/img/download (2).jfif")}
-                      alt
                     />
                   </div>
                 </div>
@@ -52,13 +50,11 @@ const ContentMain = () => {
                   <div className="avatar">
                     <img
                       src={require("../../../../assets/img/download (1).jfif")}
-                      alt
                     />
                   </div>
                   <div className="avatar">
                     <img
                       src={require("../../../../assets/img/download (2).jfif")}
-                      alt
                     />
                   </div>
                 </div>

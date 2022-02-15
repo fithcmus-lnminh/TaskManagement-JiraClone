@@ -7,7 +7,10 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { GET_LIST_PROJECT_SAGA } from "../../redux/consts/taskManagement";
+import {
+  GET_LIST_PROJECT_SAGA,
+  SHOW_DRAWER,
+} from "../../redux/consts/taskManagement";
 import Highlighter from "react-highlight-words";
 
 const ProjectManagement = () => {
@@ -190,10 +193,19 @@ const ProjectManagement = () => {
       render: (text, record) => (
         <Space size="middle">
           <a>
-            <EditOutlined />
+            <button
+              className="btn btn-primary px-2"
+              onClick={() => {
+                dispatch({ type: SHOW_DRAWER });
+              }}
+            >
+              <EditOutlined />
+            </button>
           </a>
           <a>
-            <DeleteOutlined />
+            <button className="btn btn-danger px-2">
+              <DeleteOutlined />
+            </button>
           </a>
         </Space>
       ),
