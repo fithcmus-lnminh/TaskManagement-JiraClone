@@ -7,7 +7,7 @@ import {
 } from "../../../redux/consts/taskManagement/index";
 
 const Modal = () => {
-  const { visible, ComponentContent, callbackSubmit } = useSelector(
+  const { title, visible, ComponentContent, callbackSubmit } = useSelector(
     (state) => state.drawerReducer
   );
   const dispatch = useDispatch();
@@ -23,8 +23,8 @@ const Modal = () => {
   return (
     <>
       <Drawer
-        title="Create a new account"
-        width={600}
+        title={title}
+        width={700}
         onClose={onClose}
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
@@ -37,7 +37,7 @@ const Modal = () => {
           </Space>
         }
       >
-        <ComponentContent />
+        {ComponentContent}
       </Drawer>
     </>
   );

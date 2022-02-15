@@ -9,9 +9,10 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
   GET_LIST_PROJECT_SAGA,
-  SHOW_DRAWER,
+  OPEN_FORM_EDIT_PROJECT,
 } from "../../redux/consts/taskManagement";
 import Highlighter from "react-highlight-words";
+import EditProject from "../Forms/EditProject";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -192,21 +193,21 @@ const ProjectManagement = () => {
       width: "10%",
       render: (text, record) => (
         <Space size="middle">
-          <a>
-            <button
-              className="btn btn-primary px-2"
-              onClick={() => {
-                dispatch({ type: SHOW_DRAWER });
-              }}
-            >
-              <EditOutlined />
-            </button>
-          </a>
-          <a>
-            <button className="btn btn-danger px-2">
-              <DeleteOutlined />
-            </button>
-          </a>
+          <button
+            className="btn btn-primary px-2"
+            onClick={() => {
+              dispatch({
+                type: OPEN_FORM_EDIT_PROJECT,
+                Component: <EditProject />,
+                title: "Edit project infomation",
+              });
+            }}
+          >
+            <EditOutlined />
+          </button>
+          <button className="btn btn-danger px-2">
+            <DeleteOutlined />
+          </button>
         </Space>
       ),
     },
