@@ -2,7 +2,10 @@ import { takeLatest, call, put, select } from "redux-saga/effects";
 import { taskService } from "../../services/taskService";
 import {
   CREATE_PROJECT_SAGA,
+  EDIT_PROJECT_SAGA,
   GET_LIST_PROJECT_SAGA,
+  GET_PROJECT_LIST,
+  HIDE_DRAWER,
 } from "../consts/taskManagement";
 
 //Manage saga action
@@ -34,7 +37,7 @@ function* getListProject(action) {
 
     if (status === 200) {
       yield put({
-        type: "GET_PROJECT_LIST",
+        type: GET_PROJECT_LIST,
         projectList: data.content,
       });
     }
@@ -45,4 +48,23 @@ function* getListProject(action) {
 
 export function* monitorGetListProject() {
   yield takeLatest(GET_LIST_PROJECT_SAGA, getListProject);
+}
+
+function* editProject(action) {
+  try {
+    const { data, status } = yield call(() =>
+      taskService.editProject(action.editProject)
+    );
+
+    if (status === 200) {
+      yield put({ type: GET_LIST_PROJECT_SAGA });
+      yield put({ type: HIDE_DRAWER });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorEditProject() {
+  yield takeLatest(EDIT_PROJECT_SAGA, editProject);
 }

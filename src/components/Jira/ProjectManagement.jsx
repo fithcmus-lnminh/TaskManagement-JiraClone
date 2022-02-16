@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  EDIT_PROJECT,
   GET_LIST_PROJECT_SAGA,
   OPEN_FORM_EDIT_PROJECT,
 } from "../../redux/consts/taskManagement";
@@ -25,7 +26,9 @@ const ProjectManagement = () => {
     searchedColumn: "",
   });
 
-  const projectList = useSelector((state) => state.getProjectReducer.projectList);
+  const projectList = useSelector(
+    (state) => state.getProjectReducer.projectList
+  );
 
   useEffect(() => {
     dispatch({ type: GET_LIST_PROJECT_SAGA });
@@ -200,6 +203,10 @@ const ProjectManagement = () => {
                 type: OPEN_FORM_EDIT_PROJECT,
                 Component: <EditProject />,
                 title: "Edit project infomation",
+              });
+              dispatch({
+                type: EDIT_PROJECT,
+                projectEditModel: record,
               });
             }}
           >

@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { SET_SUBMIT_EDIT_PROJECT } from "../../redux/consts/taskManagement";
+import {
+  EDIT_PROJECT_SAGA,
+  SET_SUBMIT_EDIT_PROJECT,
+} from "../../redux/consts/taskManagement";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 
@@ -73,6 +76,7 @@ const EditProject = (props) => {
               className="form-control"
               name="categoryId"
               value={values.categoryId}
+              onChange={handleChange}
             >
               {categoryArr.map((cat, index) => (
                 <option value={cat.id} key={index}>
@@ -120,7 +124,6 @@ const EditProjectWithFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: (props) => {
     const { projectEdit } = props;
-    console.log(projectEdit);
     return {
       id: projectEdit?.id,
       projectName: projectEdit.projectName,
@@ -133,7 +136,7 @@ const EditProjectWithFormik = withFormik({
   validationSchema: Yup.object().shape({}),
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(values);
+    props.dispatch({ type: EDIT_PROJECT_SAGA, editProject: values });
   },
 
   displayName: "EditProjectFormik",

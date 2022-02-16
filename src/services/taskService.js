@@ -37,4 +37,12 @@ export const taskService = {
       headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) }, //must login
     });
   },
+  editProject: (projectEditted) => {
+    return Axios({
+      url: `${DOMAIN}/Project/updateProject?projectId=${projectEditted.id}`,
+      method: "PUT",
+      data: projectEditted,
+      headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) }, //must login
+    });
+  },
 };
