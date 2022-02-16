@@ -1,31 +1,54 @@
 import React, { useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { SET_SUBMIT_EDIT_PROJECT } from "../../redux/consts/taskManagement";
+import { withFormik } from "formik";
+import * as Yup from "yup";
 
 const EditProject = (props) => {
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = props;
   const editorRef = useRef(null);
   const dispatch = useDispatch();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    alert("SUBMITTED");
-  };
+  const categoryArr = useSelector(
+    (state) => state.ProjectCategoryReducer.categoryArr
+  );
+
+  useEffect(() => {
+    dispatch({ type: "GET_ALL_CATEGORY_SAGA" });
+  }, []);
 
   useEffect(() => {
     //send submit event to redux for let they now what form need to submit
-    dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFn: submitHandler });
+    dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFn: handleSubmit });
   }, []);
 
+  const handleEditorChange = (content, editor) => {
+    setFieldValue("description", content);
+  };
+
   return (
-    <form className="container-fluid" onSubmit={submitHandler}>
+    <form className="container-fluid" onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-2">
           <div className="form-group">
             <label htmlFor="id" style={{ fontWeight: "bold" }}>
               Project ID
             </label>
-            <input className="form-control" name="id" disabled />
+            <input
+              className="form-control"
+              name="id"
+              disabled
+              value={values.id}
+            />
           </div>
         </div>
         <div className="col-6">
@@ -33,24 +56,40 @@ const EditProject = (props) => {
             <label htmlFor="projectName" style={{ fontWeight: "bold" }}>
               Project Name
             </label>
-            <input className="form-control" name="projectName" />
+            <input
+              className="form-control"
+              name="projectName"
+              onChange={handleChange}
+              value={values.projectName}
+            />
           </div>
         </div>
         <div className="col-4">
           <div className="form-group">
-            <label htmlFor="projectName" style={{ fontWeight: "bold" }}>
+            <label htmlFor="categoryId" style={{ fontWeight: "bold" }}>
               Project Category
             </label>
-            <input className="form-control" name="projectName" />
+            <select
+              className="form-control"
+              name="categoryId"
+              value={values.categoryId}
+            >
+              {categoryArr.map((cat, index) => (
+                <option value={cat.id} key={index}>
+                  {cat.projectCategoryName}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="col-12">
           <div className="form-group">
-            <label htmlFor="projectName" style={{ fontWeight: "bold" }}>
+            <label htmlFor="description" style={{ fontWeight: "bold" }}>
               Description
             </label>
             <Editor
               name="description"
+              initialValue={values.description}
               onInit={(evt, editor) => (editorRef.current = editor)}
               init={{
                 height: 200,
@@ -68,6 +107,7 @@ const EditProject = (props) => {
                 content_style:
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
+              onEditorChange={handleEditorChange}
             />
           </div>
         </div>
@@ -76,4 +116,31 @@ const EditProject = (props) => {
   );
 };
 
-export default EditProject;
+const EditProjectWithFormik = withFormik({
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    const { projectEdit } = props;
+    console.log(projectEdit);
+    return {
+      id: projectEdit?.id,
+      projectName: projectEdit.projectName,
+      description: projectEdit.description,
+      categoryId: projectEdit.categoryId,
+    };
+  },
+
+  //validatate input values
+  validationSchema: Yup.object().shape({}),
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log(values);
+  },
+
+  displayName: "EditProjectFormik",
+})(EditProject);
+
+const mapStateToProps = (state) => ({
+  projectEdit: state.ProjectReducer.projectEdit,
+});
+
+export default connect(mapStateToProps)(EditProjectWithFormik);

@@ -25,7 +25,7 @@ const ProjectManagement = () => {
     searchedColumn: "",
   });
 
-  const projectList = useSelector((state) => state.projectReducer.projectList);
+  const projectList = useSelector((state) => state.getProjectReducer.projectList);
 
   useEffect(() => {
     dispatch({ type: GET_LIST_PROJECT_SAGA });

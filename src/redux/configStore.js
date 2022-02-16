@@ -4,7 +4,7 @@ import { rootSaga } from "./sagas/rootSaga";
 import { navigateReducer } from "./reducers/navigateReducer";
 import { userReducer } from "./reducers/userReducer";
 import { ProjectCategoryReducer } from "./reducers/projectCategoryReducer";
-import { projectReducer } from "./reducers/ProjectReducer";
+import { getProjectReducer, ProjectReducer } from "./reducers/ProjectReducer";
 import { drawerReducer } from "./reducers/drawerReducer";
 
 const middlewareSaga = createSagaMiddleware();
@@ -14,7 +14,8 @@ const rootReducer = combineReducers({
   navigateReducer,
   userReducer,
   ProjectCategoryReducer,
-  projectReducer,
+  getProjectReducer,
+  ProjectReducer,
   drawerReducer,
 });
 
