@@ -15,6 +15,7 @@ import {
 } from "../../redux/consts/taskManagement";
 import Highlighter from "react-highlight-words";
 import EditProject from "../Forms/EditProject";
+import { Popconfirm } from "antd";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -213,17 +214,21 @@ const ProjectManagement = () => {
           >
             <EditOutlined />
           </button>
-          <button
-            className="btn btn-danger px-2"
-            onClick={() => {
+          <Popconfirm
+            title="Are you sure to delete this project?"
+            onConfirm={() => {
               dispatch({
                 type: DELETE_PROJECT_SAGA,
                 id: record.id,
               });
             }}
+            okText="Yes"
+            cancelText="No"
           >
-            <DeleteOutlined />
-          </button>
+            <button className="btn btn-danger px-2">
+              <DeleteOutlined />
+            </button>
+          </Popconfirm>
         </Space>
       ),
     },
