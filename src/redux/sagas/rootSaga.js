@@ -1,6 +1,7 @@
 import { all } from "redux-saga/effects";
 import {
   monitorCreateProject,
+  monitorDeleteProject,
   monitorEditProject,
   monitorGetListProject,
 } from "./ProjectSaga";
@@ -14,5 +15,6 @@ export function* rootSaga() {
     monitorCreateProject(),
     monitorGetListProject(),
     monitorEditProject(),
+    monitorDeleteProject(),
   ]);
 }

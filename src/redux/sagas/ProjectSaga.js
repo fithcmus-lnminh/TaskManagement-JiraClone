@@ -1,7 +1,9 @@
 import { takeLatest, call, put, select } from "redux-saga/effects";
+import { projectService } from "../../services/projectService";
 import { taskService } from "../../services/taskService";
 import {
   CREATE_PROJECT_SAGA,
+  DELETE_PROJECT_SAGA,
   EDIT_PROJECT_SAGA,
   GET_LIST_PROJECT_SAGA,
   GET_PROJECT_LIST,
@@ -56,6 +58,26 @@ function* editProject(action) {
       taskService.editProject(action.editProject)
     );
 
+    const navigate = yield select((state) => state.navigateReducer.navigate);
+
+    if (status === 200) {
+      navigate("/project-management");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorEditProject() {
+  yield takeLatest(EDIT_PROJECT_SAGA, editProject);
+}
+
+function* deleteProject(action) {
+  try {
+    const { data, status } = yield call(() =>
+      projectService.deleteProject(action.id)
+    );
+
     if (status === 200) {
       yield put({ type: GET_LIST_PROJECT_SAGA });
       yield put({ type: HIDE_DRAWER });
@@ -65,6 +87,6 @@ function* editProject(action) {
   }
 }
 
-export function* monitorEditProject() {
-  yield takeLatest(EDIT_PROJECT_SAGA, editProject);
+export function* monitorDeleteProject() {
+  yield takeLatest(DELETE_PROJECT_SAGA, deleteProject);
 }

@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  DELETE_PROJECT_SAGA,
   EDIT_PROJECT,
   GET_LIST_PROJECT_SAGA,
   OPEN_FORM_EDIT_PROJECT,
@@ -212,7 +213,15 @@ const ProjectManagement = () => {
           >
             <EditOutlined />
           </button>
-          <button className="btn btn-danger px-2">
+          <button
+            className="btn btn-danger px-2"
+            onClick={() => {
+              dispatch({
+                type: DELETE_PROJECT_SAGA,
+                id: record.id,
+              });
+            }}
+          >
             <DeleteOutlined />
           </button>
         </Space>
