@@ -16,6 +16,7 @@ import {
 import Highlighter from "react-highlight-words";
 import EditProject from "../Forms/EditProject";
 import { Popconfirm } from "antd";
+import { Avatar, Divider, Tooltip } from "antd";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -121,26 +122,10 @@ const ProjectManagement = () => {
     });
   };
 
-  const clearSeaching = () => {
-    setSearchState({
-      searchText: null,
-      searchedColumn: null,
-    });
-  };
-
   const clearAll = () => {
     setState({
       filteredInfo: null,
       sortedInfo: null,
-    });
-  };
-
-  const setAgeSort = () => {
-    setState({
-      sortedInfo: {
-        order: "descend",
-        columnKey: "age",
-      },
     });
   };
 
@@ -169,6 +154,17 @@ const ProjectManagement = () => {
       ...getColumnSearchProps("projectName"),
     },
     {
+      title: "Category",
+      dataIndex: "categoryName",
+      key: "categoryName",
+      width: "15%",
+      sorter: (a, b) =>
+        a.categoryName.toLowerCase() < b.categoryName.toLowerCase() ? -1 : 1,
+      sortOrder: sortedInfo.columnKey === "categoryName" && sortedInfo.order,
+      ellipsis: true,
+      ...getColumnSearchProps("categoryName"),
+    },
+    {
       title: "Creator",
       dataIndex: "creator",
       key: "creator",
@@ -182,15 +178,27 @@ const ProjectManagement = () => {
       ),
     },
     {
-      title: "Category",
-      dataIndex: "categoryName",
-      key: "categoryName",
-      width: "15%",
-      sorter: (a, b) =>
-        a.categoryName.toLowerCase() < b.categoryName.toLowerCase() ? -1 : 1,
-      sortOrder: sortedInfo.columnKey === "categoryName" && sortedInfo.order,
-      ellipsis: true,
-      ...getColumnSearchProps("categoryName"),
+      title: "Members",
+      dataIndex: "members",
+      key: "members",
+      width: "20%",
+      render: (text, record, index) => {
+        return (
+          <div>
+            {record.members?.slice(0, 3).map((member, index) => {
+              return <Avatar key={index} src={member.avatar} alt="true" />;
+            })}
+            {record.members?.length === 0 && <p className="mb-0">No members</p>}
+            {record.members?.length > 3 ? (
+              <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+                +{record.members.length - 3}
+              </Avatar>
+            ) : (
+              ""
+            )}
+          </div>
+        );
+      },
     },
     {
       title: "Action",

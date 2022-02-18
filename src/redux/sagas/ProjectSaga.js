@@ -7,6 +7,7 @@ import {
   EDIT_PROJECT_SAGA,
   GET_LIST_PROJECT_SAGA,
   GET_PROJECT_LIST,
+  HIDE_DRAWER,
 } from "../consts/taskManagement";
 import { openNotification } from "../../utils/notification";
 
@@ -22,6 +23,7 @@ function* createProject(action) {
 
     if (status === 200) {
       navigate("/project-management");
+      openNotification("success", "Add Project Successfully!");
     }
   } catch (err) {
     console.log(err);
@@ -62,6 +64,11 @@ function* editProject(action) {
 
     if (status === 200) {
       navigate("/project-management");
+      yield put({
+        type: HIDE_DRAWER,
+      });
+      yield put({ type: GET_LIST_PROJECT_SAGA });
+      openNotification("success", "Update Project Successfully!");
     }
   } catch (err) {
     console.log(err);
@@ -83,7 +90,7 @@ function* deleteProject(action) {
     }
     yield put({ type: GET_LIST_PROJECT_SAGA });
   } catch (err) {
-    openNotification("error", "Delete Project Failed!", err);
+    openNotification("error", "Delete Project Failed!");
     console.log(err);
   }
 }
