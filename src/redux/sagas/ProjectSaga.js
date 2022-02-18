@@ -7,14 +7,14 @@ import {
   EDIT_PROJECT_SAGA,
   GET_LIST_PROJECT_SAGA,
   GET_PROJECT_LIST,
-  HIDE_DRAWER,
 } from "../consts/taskManagement";
+import { openNotification } from "../../utils/notification";
 
 //Manage saga action
 function* createProject(action) {
   //Call API
   try {
-    const { data, status } = yield call(() =>
+    const { status } = yield call(() =>
       taskService.createProjectWithAuthorization(action.newProject)
     );
 
@@ -54,7 +54,7 @@ export function* monitorGetListProject() {
 
 function* editProject(action) {
   try {
-    const { data, status } = yield call(() =>
+    const { status } = yield call(() =>
       taskService.editProject(action.editProject)
     );
 
@@ -74,15 +74,16 @@ export function* monitorEditProject() {
 
 function* deleteProject(action) {
   try {
-    const { data, status } = yield call(() =>
+    const { status } = yield call(() =>
       projectService.deleteProject(action.id)
     );
 
     if (status === 200) {
-      yield put({ type: GET_LIST_PROJECT_SAGA });
-      yield put({ type: HIDE_DRAWER });
+      openNotification("success", "Delete Project Successfully!");
     }
+    yield put({ type: GET_LIST_PROJECT_SAGA });
   } catch (err) {
+    openNotification("error", "Delete Project Failed!", err);
     console.log(err);
   }
 }
