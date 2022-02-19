@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Index from "../UI/Index";
-import { Table, Button, Space, Tag, Input } from "antd";
+import { Table, Button, Space, Tag, Input, Popover } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -12,11 +12,13 @@ import {
   EDIT_PROJECT,
   GET_LIST_PROJECT_SAGA,
   OPEN_FORM_EDIT_PROJECT,
+  SEARCH_USER_SAGA,
 } from "../../redux/consts/taskManagement";
 import Highlighter from "react-highlight-words";
 import EditProject from "../Forms/EditProject";
 import { Popconfirm } from "antd";
-import { Avatar, Divider, Tooltip } from "antd";
+import { Avatar } from "antd";
+import { AutoComplete } from "antd";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -188,7 +190,6 @@ const ProjectManagement = () => {
             {record.members?.slice(0, 3).map((member, index) => {
               return <Avatar key={index} src={member.avatar} alt="true" />;
             })}
-            {record.members?.length === 0 && <p className="mb-0">No members</p>}
             {record.members?.length > 3 ? (
               <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
                 +{record.members.length - 3}
@@ -196,6 +197,22 @@ const ProjectManagement = () => {
             ) : (
               ""
             )}
+            <Popover
+              placement="rightTop"
+              title={"ADD MEMBER"}
+              content={
+                <AutoComplete
+                  placeholder="Type member's name here"
+                  style={{ width: "100%" }}
+                  onSearch={(value) => {
+                    dispatch({ type: SEARCH_USER_SAGA, keyword: value });
+                  }}
+                />
+              }
+              trigger="click"
+            >
+              <Button shape="circle">+</Button>
+            </Popover>
           </div>
         );
       },
