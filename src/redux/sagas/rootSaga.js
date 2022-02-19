@@ -7,7 +7,10 @@ import {
   monitorSearchUser,
 } from "./ProjectSaga";
 import { monitorCategory } from "./ProjectCategorySaga";
-import { monitorLogin } from "./taskManagement/UserSaga";
+import {
+  monitorAddUserToProject,
+  monitorLogin,
+} from "./taskManagement/UserSaga";
 
 export function* rootSaga() {
   yield all([
@@ -18,5 +21,6 @@ export function* rootSaga() {
     monitorEditProject(),
     monitorDeleteProject(),
     monitorSearchUser(),
+    monitorAddUserToProject(),
   ]);
 }

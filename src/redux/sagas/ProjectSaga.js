@@ -9,6 +9,7 @@ import {
   GET_LIST_PROJECT_SAGA,
   GET_PROJECT_LIST,
   HIDE_DRAWER,
+  SEARCH_USER,
   SEARCH_USER_SAGA,
 } from "../consts/taskManagement";
 import { openNotification } from "../../utils/notification";
@@ -108,7 +109,7 @@ function* searchUser(action) {
     );
 
     if (status === 200) {
-      console.log(data);
+      yield put({ type: SEARCH_USER, userSearch: data.content });
     }
   } catch (err) {
     console.log(err);

@@ -8,6 +8,10 @@ class UserService extends baseService {
   getUserByKeyword = (keyword) => {
     return this.get(`/Users/getUser?keyword=${keyword}`);
   };
+
+  assignUserToProject = (userProject) => {
+    return this.post("Project/assignUserProject", userProject);
+  };
 }
 
 export const userService = new UserService();

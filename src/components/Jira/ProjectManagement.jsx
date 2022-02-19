@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  ADD_USER_TO_PROJECT_SAGA,
   DELETE_PROJECT_SAGA,
   EDIT_PROJECT,
   GET_LIST_PROJECT_SAGA,
@@ -38,6 +39,9 @@ const ProjectManagement = () => {
   useEffect(() => {
     dispatch({ type: GET_LIST_PROJECT_SAGA });
   }, []);
+
+  const userSearch = useSelector((state) => state.userReducer.userSearch);
+  const [searchValue, setSearchValue] = useState("");
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -202,10 +206,27 @@ const ProjectManagement = () => {
               title={"ADD MEMBER"}
               content={
                 <AutoComplete
+                  options={userSearch?.map((user) => {
+                    return { label: user.name, value: user.userId.toString() }; //value = id to call api
+                  })}
+                  value={searchValue} //set value displayed
+                  onChange={(value) => {
+                    setSearchValue(value); //override onchange for displaying
+                  }}
                   placeholder="Type member's name here"
                   style={{ width: "100%" }}
                   onSearch={(value) => {
                     dispatch({ type: SEARCH_USER_SAGA, keyword: value });
+                  }}
+                  onSelect={(valueSelect, option) => {
+                    setSearchValue(option.label); //set value when select
+                    dispatch({
+                      type: ADD_USER_TO_PROJECT_SAGA,
+                      userProject: {
+                        projectId: record.id,
+                        userId: valueSelect,
+                      },
+                    });
                   }}
                 />
               }
