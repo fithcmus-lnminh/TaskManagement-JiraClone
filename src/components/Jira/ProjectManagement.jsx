@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Index from "../UI/Index";
 import { Table, Button, Space, Tag, Input, Popover } from "antd";
 import {
@@ -37,6 +37,8 @@ const ProjectManagement = () => {
   const projectList = useSelector(
     (state) => state.getProjectReducer.projectList
   );
+
+  const searchRef = useRef(null);
 
   useEffect(() => {
     dispatch({ type: GET_LIST_PROJECT_SAGA });
@@ -238,7 +240,15 @@ const ProjectManagement = () => {
                   placeholder="Type member's name here"
                   style={{ width: "100%" }}
                   onSearch={(value) => {
-                    dispatch({ type: SEARCH_USER_SAGA, keyword: value });
+                    //if user continue to type, clear timeout the previous searchRef
+                    if (searchRef.current) {
+                      clearTimeout(searchRef.current);
+                    }
+
+                    //and set searchRef to new timeout
+                    searchRef.current = setTimeout(() => {
+                      dispatch({ type: SEARCH_USER_SAGA, keyword: value });
+                    }, 300); //debounce, dispatch after 300ms after user typing
                   }}
                   onSelect={(valueSelect, option) => {
                     setSearchValue(option.label); //set value when select
