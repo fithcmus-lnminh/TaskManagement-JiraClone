@@ -192,12 +192,162 @@ const ProjectManagement = () => {
         return (
           <div>
             {record.members?.slice(0, 3).map((member, index) => {
-              return <Avatar key={index} src={member.avatar} alt="true" />;
+              return (
+                <Popover
+                  placement="bottom"
+                  title={"Member"}
+                  content={() => {
+                    return (
+                      <table
+                        className="table"
+                        style={{
+                          display: "table",
+                          borderCollapse: "collapse",
+                          border: "none",
+                        }}
+                      >
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {record.members?.slice(0, 3).map((item, index) => {
+                            return (
+                              <tr>
+                                <td
+                                  style={{
+                                    display: "table-cell",
+                                    verticalAlign: "middle",
+                                  }}
+                                >
+                                  {item.userId}
+                                </td>
+                                <td
+                                  style={{
+                                    display: "table-cell",
+                                    verticalAlign: "middle",
+                                  }}
+                                >
+                                  <img
+                                    src={item.avatar}
+                                    width="35"
+                                    height="35"
+                                    style={{ borderRadius: "50%" }}
+                                  />
+                                </td>
+                                <td
+                                  style={{
+                                    display: "table-cell",
+                                    verticalAlign: "middle",
+                                  }}
+                                >
+                                  {item.name}
+                                </td>
+                                <td
+                                  style={{
+                                    display: "table-cell",
+                                    verticalAlign: "middle",
+                                  }}
+                                >
+                                  <button className="btn btn-danger pt-0 px-2">
+                                    <DeleteOutlined />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    );
+                  }}
+                >
+                  <Avatar key={index} src={member.avatar} alt="true" />
+                </Popover>
+              );
             })}
             {record.members?.length > 3 ? (
-              <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
-                +{record.members.length - 3}
-              </Avatar>
+              <Popover
+                placement="bottom"
+                title={"Member"}
+                content={() => {
+                  return (
+                    <table
+                      className="table"
+                      style={{
+                        display: "table",
+                        borderCollapse: "collapse",
+                        border: "none",
+                      }}
+                    >
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Avatar</th>
+                          <th>Name</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {record.members?.slice(3).map((item, index) => {
+                          return (
+                            <tr>
+                              <td
+                                style={{
+                                  display: "table-cell",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+                                {item.userId}
+                              </td>
+                              <td
+                                style={{
+                                  display: "table-cell",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+                                <img
+                                  src={item.avatar}
+                                  width="35"
+                                  height="35"
+                                  style={{ borderRadius: "50%" }}
+                                />
+                              </td>
+                              <td
+                                style={{
+                                  display: "table-cell",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+                                {item.name}
+                              </td>
+                              <td
+                                style={{
+                                  display: "table-cell",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+                                <button className="btn btn-danger pt-0 px-2">
+                                  <DeleteOutlined />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  );
+                }}
+              >
+                <Avatar
+                  style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                >
+                  +{record.members.length - 3}
+                </Avatar>
+              </Popover>
             ) : (
               ""
             )}

@@ -62,7 +62,7 @@ function* addUserToProject(action) {
     if (err.status === 400)
       openNotification("error", "You do not have permission to this project!");
     else openNotification("warning", "You have already added this user!");
-    console.log("LỖI", err);
+    console.log(err);
   }
 }
 
