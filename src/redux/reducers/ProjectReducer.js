@@ -1,4 +1,8 @@
-import { EDIT_PROJECT, GET_PROJECT_LIST } from "../consts/taskManagement";
+import {
+  EDIT_PROJECT,
+  GET_PROJECT_DETAIL,
+  GET_PROJECT_LIST,
+} from "../consts/taskManagement";
 
 const initialState = {
   projectEdit: {
@@ -7,6 +11,7 @@ const initialState = {
     description: "<h1>Default</h1>",
     categoryId: "1",
   },
+  projectDetail: {},
 };
 
 const getProjectInitialState = {
@@ -18,7 +23,9 @@ export const ProjectReducer = (state = initialState, action) => {
     case EDIT_PROJECT:
       state.projectEdit = action.projectEditModel;
       return { ...state };
-
+    case GET_PROJECT_DETAIL:
+      state.projectDetail = action.projectDetail;
+      return { ...state };
     default:
       return state;
   }

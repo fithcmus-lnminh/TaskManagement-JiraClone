@@ -22,6 +22,7 @@ import { Popconfirm } from "antd";
 import { Avatar } from "antd";
 import { AutoComplete } from "antd";
 import UserTable from "../UI/Shared/UserTable";
+import { NavLink } from "react-router-dom";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -162,6 +163,9 @@ const ProjectManagement = () => {
       sortOrder: sortedInfo.columnKey === "projectName" && sortedInfo.order,
       ellipsis: true,
       ...getColumnSearchProps("projectName"),
+      render: (text, record, index) => (
+        <NavLink to={`/project-detail/${record.id}`}>{text}</NavLink>
+      ),
     },
     {
       title: "Category",

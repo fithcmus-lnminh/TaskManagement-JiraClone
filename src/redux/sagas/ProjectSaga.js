@@ -7,7 +7,10 @@ import {
   DELETE_PROJECT_SAGA,
   EDIT_PROJECT_SAGA,
   GET_LIST_PROJECT_SAGA,
+  GET_PROJECT_DETAIL,
+  GET_PROJECT_DETAIL_SAGA,
   GET_PROJECT_LIST,
+  GET_USER_DETAIL_SAGA,
   HIDE_DRAWER,
   SEARCH_USER,
   SEARCH_USER_SAGA,
@@ -118,4 +121,24 @@ function* searchUser(action) {
 
 export function* monitorSearchUser() {
   yield takeLatest(SEARCH_USER_SAGA, searchUser);
+}
+
+function* getProjectDetail(action) {
+  const navigate = yield select((state) => state.navigateReducer.navigate);
+  try {
+    const { data, status } = yield call(() =>
+      projectService.getProjectDetail(action.projectId)
+    );
+
+    if (status === 200) {
+      yield put({ type: GET_PROJECT_DETAIL, projectDetail: data.content });
+    }
+  } catch (err) {
+    console.log(err);
+    navigate("/project-management");
+  }
+}
+
+export function* monitorGetProjectDetail() {
+  yield takeLatest(GET_PROJECT_DETAIL_SAGA, getProjectDetail);
 }

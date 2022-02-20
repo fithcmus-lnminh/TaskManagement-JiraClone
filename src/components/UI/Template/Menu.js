@@ -20,7 +20,7 @@ const Menu = () => {
         <div>
           <i className="fa fa-credit-card" />
           <NavLink
-            to="/"
+            to="/board"
             style={{ color: "black" }}
             className={(navData) => (navData.isActive ? "active" : "")}
           >

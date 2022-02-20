@@ -1,6 +1,6 @@
 import React from "react";
 
-const HeaderMain = () => {
+const HeaderMain = (props) => {
   return (
     <div className="header">
       <nav aria-label="breadcrumb">
@@ -8,7 +8,7 @@ const HeaderMain = () => {
           <li className="breadcrumb-item">Projects</li>
           <li className="breadcrumb-item">singularity 1.0</li>
           <li className="breadcrumb-item active" aria-current="page">
-            Main Board
+            {props.children}
           </li>
         </ol>
       </nav>

@@ -60,9 +60,11 @@ function* addUserToProject(action) {
       openNotification("success", "Add Member To Project Successfully!");
     }
   } catch (err) {
-    if (err.status === 400)
+    if (err.status === 500)
+      openNotification("warning", "You have already added this user!");
+    else {
       openNotification("error", "You do not have permission to this project!");
-    else openNotification("warning", "You have already added this user!");
+    }
     console.log(err);
   }
 }
