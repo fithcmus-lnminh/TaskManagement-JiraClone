@@ -9,6 +9,7 @@ import {
 import {
   ADD_USER_TO_PROJECT_SAGA,
   GET_LIST_PROJECT_SAGA,
+  REMOVE_USER_FROM_PROJECT,
   USER_LOGIN_API,
 } from "../../consts/taskManagement/index";
 import { taskService } from "../../../services/taskService";
@@ -68,4 +69,25 @@ function* addUserToProject(action) {
 
 export function* monitorAddUserToProject() {
   yield takeLatest(ADD_USER_TO_PROJECT_SAGA, addUserToProject);
+}
+
+function* removeUserFromProject(action) {
+  //Call API
+  try {
+    const { data, status } = yield call(() =>
+      userService.removeUserFromProject(action.userProject)
+    );
+
+    if (status === 200) {
+      yield put({ type: GET_LIST_PROJECT_SAGA });
+      openNotification("success", "Remove Member Successfully!");
+    }
+  } catch (err) {
+    openNotification("error", "You do not have permission to this project!");
+    console.log(err);
+  }
+}
+
+export function* monitorRemoveUserFromProject() {
+  yield takeLatest(REMOVE_USER_FROM_PROJECT, removeUserFromProject);
 }

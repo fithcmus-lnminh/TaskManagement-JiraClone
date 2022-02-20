@@ -13,6 +13,7 @@ import {
   EDIT_PROJECT,
   GET_LIST_PROJECT_SAGA,
   OPEN_FORM_EDIT_PROJECT,
+  REMOVE_USER_FROM_PROJECT,
   SEARCH_USER_SAGA,
 } from "../../redux/consts/taskManagement";
 import Highlighter from "react-highlight-words";
@@ -253,7 +254,18 @@ const ProjectManagement = () => {
                                     verticalAlign: "middle",
                                   }}
                                 >
-                                  <button className="btn btn-danger pt-0 px-2">
+                                  <button
+                                    onClick={() => {
+                                      dispatch({
+                                        type: REMOVE_USER_FROM_PROJECT,
+                                        userProject: {
+                                          userId: item.userId,
+                                          projectId: record.id,
+                                        },
+                                      });
+                                    }}
+                                    className="btn btn-danger pt-0 px-2"
+                                  >
                                     <DeleteOutlined />
                                   </button>
                                 </td>
@@ -330,7 +342,18 @@ const ProjectManagement = () => {
                                   verticalAlign: "middle",
                                 }}
                               >
-                                <button className="btn btn-danger pt-0 px-2">
+                                <button
+                                  onClick={() => {
+                                    dispatch({
+                                      type: REMOVE_USER_FROM_PROJECT,
+                                      userProject: {
+                                        userId: item.userId,
+                                        projectId: record.id,
+                                      },
+                                    });
+                                  }}
+                                  className="btn btn-danger pt-0 px-2"
+                                >
                                   <DeleteOutlined />
                                 </button>
                               </td>
