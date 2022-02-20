@@ -21,6 +21,7 @@ import EditProject from "../Forms/EditProject";
 import { Popconfirm } from "antd";
 import { Avatar } from "antd";
 import { AutoComplete } from "antd";
+import UserTable from "../UI/Shared/UserTable";
 
 const ProjectManagement = () => {
   const dispatch = useDispatch();
@@ -198,83 +199,7 @@ const ProjectManagement = () => {
                   placement="bottom"
                   title={"Member"}
                   content={() => {
-                    return (
-                      <table
-                        className="table"
-                        style={{
-                          display: "table",
-                          borderCollapse: "collapse",
-                          border: "none",
-                        }}
-                      >
-                        <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Avatar</th>
-                            <th>Name</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {record.members?.slice(0, 3).map((item, index) => {
-                            return (
-                              <tr>
-                                <td
-                                  style={{
-                                    display: "table-cell",
-                                    verticalAlign: "middle",
-                                  }}
-                                >
-                                  {item.userId}
-                                </td>
-                                <td
-                                  style={{
-                                    display: "table-cell",
-                                    verticalAlign: "middle",
-                                  }}
-                                >
-                                  <img
-                                    src={item.avatar}
-                                    width="35"
-                                    height="35"
-                                    style={{ borderRadius: "50%" }}
-                                  />
-                                </td>
-                                <td
-                                  style={{
-                                    display: "table-cell",
-                                    verticalAlign: "middle",
-                                  }}
-                                >
-                                  {item.name}
-                                </td>
-                                <td
-                                  style={{
-                                    display: "table-cell",
-                                    verticalAlign: "middle",
-                                  }}
-                                >
-                                  <button
-                                    onClick={() => {
-                                      dispatch({
-                                        type: REMOVE_USER_FROM_PROJECT,
-                                        userProject: {
-                                          userId: item.userId,
-                                          projectId: record.id,
-                                        },
-                                      });
-                                    }}
-                                    className="btn btn-danger pt-0 px-2"
-                                  >
-                                    <DeleteOutlined />
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    );
+                    return <UserTable record={record} start={0} end={3} />;
                   }}
                 >
                   <Avatar key={index} src={member.avatar} alt="true" />
@@ -286,83 +211,7 @@ const ProjectManagement = () => {
                 placement="bottom"
                 title={"Member"}
                 content={() => {
-                  return (
-                    <table
-                      className="table"
-                      style={{
-                        display: "table",
-                        borderCollapse: "collapse",
-                        border: "none",
-                      }}
-                    >
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Avatar</th>
-                          <th>Name</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {record.members?.slice(3).map((item, index) => {
-                          return (
-                            <tr>
-                              <td
-                                style={{
-                                  display: "table-cell",
-                                  verticalAlign: "middle",
-                                }}
-                              >
-                                {item.userId}
-                              </td>
-                              <td
-                                style={{
-                                  display: "table-cell",
-                                  verticalAlign: "middle",
-                                }}
-                              >
-                                <img
-                                  src={item.avatar}
-                                  width="35"
-                                  height="35"
-                                  style={{ borderRadius: "50%" }}
-                                />
-                              </td>
-                              <td
-                                style={{
-                                  display: "table-cell",
-                                  verticalAlign: "middle",
-                                }}
-                              >
-                                {item.name}
-                              </td>
-                              <td
-                                style={{
-                                  display: "table-cell",
-                                  verticalAlign: "middle",
-                                }}
-                              >
-                                <button
-                                  onClick={() => {
-                                    dispatch({
-                                      type: REMOVE_USER_FROM_PROJECT,
-                                      userProject: {
-                                        userId: item.userId,
-                                        projectId: record.id,
-                                      },
-                                    });
-                                  }}
-                                  className="btn btn-danger pt-0 px-2"
-                                >
-                                  <DeleteOutlined />
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  );
+                  return <UserTable record={record} start={3} />;
                 }}
               >
                 <Avatar
