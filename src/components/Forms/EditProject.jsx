@@ -34,8 +34,8 @@ const EditProject = (props) => {
     dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFn: handleSubmit });
   }, []);
 
-  const handleEditorChange = (content, editor) => {
-    setFieldValue("description", content);
+  const submitHandler = () => {
+    setFieldValue("description", editorRef.current.getContent());
   };
 
   return (
@@ -111,7 +111,7 @@ const EditProject = (props) => {
                 content_style:
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
-              onEditorChange={handleEditorChange}
+              onBlur={submitHandler}
             />
           </div>
         </div>

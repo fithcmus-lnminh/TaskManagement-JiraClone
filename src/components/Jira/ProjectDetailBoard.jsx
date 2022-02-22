@@ -19,10 +19,9 @@ const Home = () => {
   return (
     <Index>
       <div className="main">
-        <HeaderMain>Project Details {projectId}</HeaderMain>
-        <h3>Cyber Board {projectId}</h3>
-        <InfoMain />
-        <ContentMain />
+        <HeaderMain>Project Detail / {projectDetail.projectName}</HeaderMain>
+        <InfoMain projectDetail={projectDetail} />
+        <ContentMain projectDetail={projectDetail} />
       </div>
     </Index>
   );
