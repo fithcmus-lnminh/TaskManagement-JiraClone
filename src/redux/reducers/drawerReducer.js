@@ -1,5 +1,6 @@
 import {
   HIDE_DRAWER,
+  OPEN_FORM_CREATE_TASK,
   OPEN_FORM_EDIT_PROJECT,
   SET_SUBMIT_EDIT_PROJECT,
   SHOW_DRAWER,
@@ -30,6 +31,7 @@ export const drawerReducer = (state = initialState, action) => {
     case SET_SUBMIT_EDIT_PROJECT: {
       return { ...state, callbackSubmit: action.submitFn };
     }
+
     default:
       return state;
   }

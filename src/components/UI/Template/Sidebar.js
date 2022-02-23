@@ -10,10 +10,14 @@ import {
   SearchOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { OPEN_FORM_EDIT_PROJECT } from "../../../redux/consts/taskManagement";
+import CreateTask from "../../Forms/CreateTask";
 
 const { Header, Sider, Content } = Layout;
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     collapsed: true,
   });
@@ -41,7 +45,17 @@ const Sidebar = () => {
         </div>
         <div className="logo" />
         <Menu theme="dark" mode="inline" selectedKeys={{}}>
-          <Menu.Item key="1" icon={<PlusOutlined />}>
+          <Menu.Item
+            key="1"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              dispatch({
+                type: OPEN_FORM_EDIT_PROJECT,
+                Component: <CreateTask />,
+                title: "Create New Task",
+              });
+            }}
+          >
             CREATE TASK
           </Menu.Item>
           <Menu.Item key="2" icon={<SearchOutlined />}>
