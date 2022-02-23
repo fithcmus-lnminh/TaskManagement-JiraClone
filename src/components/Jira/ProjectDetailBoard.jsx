@@ -7,8 +7,10 @@ import HeaderMain from "../UI/Template/Main/HeaderMain";
 import InfoMain from "../UI/Template/Main/InfoMain";
 import { GET_PROJECT_DETAIL_SAGA } from "../../redux/consts/taskManagement";
 
-const Home = () => {
-  const { projectDetail } = useSelector((state) => state.ProjectReducer);
+const ProjectDetailBoard = () => {
+  const projectDetail = useSelector(
+    (state) => state.ProjectReducer.projectDetail
+  );
   console.log(projectDetail);
   const dispatch = useDispatch();
   const { projectId } = useParams();
@@ -16,6 +18,7 @@ const Home = () => {
   useEffect(() => {
     dispatch({ type: GET_PROJECT_DETAIL_SAGA, projectId: projectId });
   }, []);
+
   return (
     <Index>
       <div className="main">
@@ -27,4 +30,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ProjectDetailBoard;

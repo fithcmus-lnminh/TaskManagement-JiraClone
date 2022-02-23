@@ -24,7 +24,6 @@ function App() {
       <Routes>
         <Route path="/" element={<ProjectManagement />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/board" element={<Board />} />
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/create-project" element={<CreateProject />} />
         <Route

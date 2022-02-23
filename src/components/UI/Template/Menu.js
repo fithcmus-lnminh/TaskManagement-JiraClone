@@ -17,7 +17,7 @@ const Menu = () => {
         </div>
       </div>
       <div className="control">
-        <div>
+        {/* <div>
           <i className="fa fa-credit-card" />
           <NavLink
             to="/board"
@@ -27,7 +27,7 @@ const Menu = () => {
             {" "}
             Main Board
           </NavLink>
-        </div>
+        </div> */}
         <div>
           <i className="fa fa-plus" />
           <NavLink to="/create-project" style={{ color: "black" }}>

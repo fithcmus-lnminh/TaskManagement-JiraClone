@@ -130,6 +130,8 @@ function* getProjectDetail(action) {
       projectService.getProjectDetail(action.projectId)
     );
 
+    console.log("DATA", data);
+
     if (status === 200) {
       yield put({ type: GET_PROJECT_DETAIL, projectDetail: data.content });
     }

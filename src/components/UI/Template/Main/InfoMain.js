@@ -6,7 +6,9 @@ const InfoMain = (props) => {
   return (
     <>
       <h3 className="mb-2">{projectDetail.projectName}</h3>
-      <p>{projectDetail.description && parse(projectDetail.description)}</p>
+      <span>
+        {projectDetail.description && parse(projectDetail.description)}
+      </span>
       <div className="info" style={{ display: "flex" }}>
         <div className="search-block">
           <input className="search" />
@@ -15,8 +17,8 @@ const InfoMain = (props) => {
         <div className="avatar-group" style={{ display: "flex" }}>
           {projectDetail.members?.map((user, index) => {
             return (
-              <div className="avatar">
-                <img src={user.avatar} />
+              <div className="avatar" key={index}>
+                <img src={user.avatar} alt="true" />
               </div>
             );
           })}

@@ -2,13 +2,17 @@ import React from "react";
 
 const ContentMain = (props) => {
   const { projectDetail } = props;
-  console.log(projectDetail.lstTask);
+  console.log(projectDetail);
 
   const renderCardTaskList = () => {
-    return projectDetail.lstTask.map((task, index) => {
+    return projectDetail.lstTask?.map((task, index) => {
       return (
-        <div className="card" style={{ width: "17rem", height: "25rem" }}>
-          <div className="card-header">BACKLOG 3</div>
+        <div
+          key={index}
+          className="card"
+          style={{ width: "17rem", height: "25rem" }}
+        >
+          <div className="card-header">{task.statusName}</div>
           <ul className="list-group list-group-flush">
             <li
               className="list-group-item"
@@ -29,11 +33,13 @@ const ContentMain = (props) => {
                     <div className="avatar">
                       <img
                         src={require("../../../../assets/img/download (1).jfif")}
+                        alt="true"
                       />
                     </div>
                     <div className="avatar">
                       <img
                         src={require("../../../../assets/img/download (2).jfif")}
+                        alt="true"
                       />
                     </div>
                   </div>
@@ -54,11 +60,13 @@ const ContentMain = (props) => {
                     <div className="avatar">
                       <img
                         src={require("../../../../assets/img/download (1).jfif")}
+                        alt="true"
                       />
                     </div>
                     <div className="avatar">
                       <img
                         src={require("../../../../assets/img/download (2).jfif")}
+                        alt="true"
                       />
                     </div>
                   </div>
@@ -80,28 +88,3 @@ const ContentMain = (props) => {
 };
 
 export default ContentMain;
-
-{
-  /* <div className="card" style={{ width: "17rem", height: "25rem" }}>
-        <div className="card-header">SELECTED FOR DEVELOPMENT 2</div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">Cras justo odio</li>
-          <li className="list-group-item">Dapibus ac facilisis in</li>
-        </ul>
-      </div>
-      <div className="card" style={{ width: "17rem", height: "25rem" }}>
-        <div className="card-header">IN PROGRESS 2</div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">Cras justo odio</li>
-          <li className="list-group-item">Dapibus ac facilisis in</li>
-        </ul>
-      </div>
-      <div className="card" style={{ width: "17rem", height: "25rem" }}>
-        <div className="card-header">DONE 3</div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">Cras justo odio</li>
-          <li className="list-group-item">Dapibus ac facilisis in</li>
-          <li className="list-group-item">Vestibulum at eros</li>
-        </ul>
-      </div> */
-}
