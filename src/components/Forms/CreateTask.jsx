@@ -1,6 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Select, Slider } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GET_ALL_PRIORITY_SAGA,
+  GET_ALL_PROJECT_SAGA,
+  GET_ALL_TASKTYPE_SAGA,
+} from "../../redux/consts/taskManagement";
 
 const { Option } = Select;
 
@@ -11,10 +17,20 @@ for (let i = 10; i < 36; i++) {
 
 const CreateTask = () => {
   const editorRef = useRef(null);
+  const dispatch = useDispatch();
   const [timeTracking, setTimeTracking] = useState({
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
   });
+  const { allProject, allTaskType, allPriority } = useSelector(
+    (state) => state.ProjectReducer
+  );
+
+  useEffect(() => {
+    dispatch({ type: GET_ALL_PROJECT_SAGA });
+    dispatch({ type: GET_ALL_TASKTYPE_SAGA });
+    dispatch({ type: GET_ALL_PRIORITY_SAGA });
+  }, []);
 
   const handleChange = (value) => {
     console.log(`Selected: ${value}`);
@@ -24,8 +40,13 @@ const CreateTask = () => {
       <div className="form-group">
         <label style={{ fontWeight: "bold" }}>Project</label>
         <select name="projectId" className="form-control">
-          <option value="11">Project 1</option>
-          <option value="12">Project 2</option>
+          {allProject.map((project, index) => {
+            return (
+              <option key={index} value={project.id}>
+                {project.projectName}
+              </option>
+            );
+          })}
         </select>
       </div>
       <div className="row">
@@ -33,8 +54,13 @@ const CreateTask = () => {
           <div className="form-group">
             <label style={{ fontWeight: "bold" }}>Task Type</label>
             <select name="typeId" className="form-control">
-              <option value="zzz">New Task</option>
-              <option value="zzzz">Bugs</option>
+              {allTaskType.map((type, index) => {
+                return (
+                  <option key={index} value={type.id}>
+                    {type.taskType}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -42,8 +68,13 @@ const CreateTask = () => {
           <div className="form-group">
             <label style={{ fontWeight: "bold" }}>Priority</label>
             <select name="priorityId" className="form-control">
-              <option value="zzz3">High</option>
-              <option value="zzzz2">Low</option>
+              {allPriority.map((p, index) => {
+                return (
+                  <option key={index} value={p.priorityId}>
+                    {p.priority}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>

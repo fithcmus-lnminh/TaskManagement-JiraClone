@@ -10,7 +10,19 @@ class ProjectService extends baseService {
   };
 
   getProjectDetail = (id) => {
-    return this.get(`Project/getProjectDetail?id=${id}`);
+    return this.get(`/Project/getProjectDetail?id=${id}`);
+  };
+
+  getAllProject = () => {
+    return this.get("/Project/getAllProject");
+  };
+
+  getAllTaskType = () => {
+    return this.get("/TaskType/getAll");
+  };
+
+  getAllPriority = () => {
+    return this.get("/Priority/getAll");
   };
 }
 

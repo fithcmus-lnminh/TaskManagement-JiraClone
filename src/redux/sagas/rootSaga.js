@@ -6,6 +6,9 @@ import {
   monitorGetListProject,
   monitorSearchUser,
   monitorGetProjectDetail,
+  monitorGetAllProject,
+  monitorGetAllTaskType,
+  monitorGetAllPriority,
 } from "./ProjectSaga";
 import { monitorCategory } from "./ProjectCategorySaga";
 import {
@@ -26,5 +29,8 @@ export function* rootSaga() {
     monitorAddUserToProject(),
     monitorRemoveUserFromProject(),
     monitorGetProjectDetail(),
+    monitorGetAllProject(),
+    monitorGetAllTaskType(),
+    monitorGetAllPriority(),
   ]);
 }

@@ -6,6 +6,12 @@ import {
   CREATE_PROJECT_SAGA,
   DELETE_PROJECT_SAGA,
   EDIT_PROJECT_SAGA,
+  GET_ALL_PRIORITY,
+  GET_ALL_PRIORITY_SAGA,
+  GET_ALL_PROJECT,
+  GET_ALL_PROJECT_SAGA,
+  GET_ALL_TASKTYPE,
+  GET_ALL_TASKTYPE_SAGA,
   GET_LIST_PROJECT_SAGA,
   GET_PROJECT_DETAIL,
   GET_PROJECT_DETAIL_SAGA,
@@ -143,4 +149,52 @@ function* getProjectDetail(action) {
 
 export function* monitorGetProjectDetail() {
   yield takeLatest(GET_PROJECT_DETAIL_SAGA, getProjectDetail);
+}
+
+function* getAllProject(action) {
+  try {
+    const { data, status } = yield call(() => projectService.getAllProject());
+
+    if (status === 200) {
+      yield put({ type: GET_ALL_PROJECT, allProjectArr: data.content });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorGetAllProject() {
+  yield takeLatest(GET_ALL_PROJECT_SAGA, getAllProject);
+}
+
+function* getAllTaskType(action) {
+  try {
+    const { data, status } = yield call(() => projectService.getAllTaskType());
+
+    if (status === 200) {
+      yield put({ type: GET_ALL_TASKTYPE, allTaskTypeArr: data.content });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorGetAllTaskType() {
+  yield takeLatest(GET_ALL_TASKTYPE_SAGA, getAllTaskType);
+}
+
+function* getAllPriority(action) {
+  try {
+    const { data, status } = yield call(() => projectService.getAllPriority());
+
+    if (status === 200) {
+      yield put({ type: GET_ALL_PRIORITY, allPriorityArr: data.content });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorGetAllPriority(action) {
+  yield takeLatest(GET_ALL_PRIORITY_SAGA, getAllPriority);
 }
