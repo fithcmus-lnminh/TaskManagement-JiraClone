@@ -1,13 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Select, Slider } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import {
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_PROJECT_SAGA,
+  GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
   GET_ALL_USER_SAGA,
 } from "../../redux/consts/taskManagement";
+import { withFormik } from "formik";
+import * as Yup from "yup";
 
 const { Option } = Select;
 
@@ -16,14 +19,23 @@ for (let i = 10; i < 36; i++) {
   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
 }
 
-const CreateTask = () => {
+const CreateTask = (props) => {
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = props;
   const editorRef = useRef(null);
   const dispatch = useDispatch();
   const [timeTracking, setTimeTracking] = useState({
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
   });
-  const { allProject, allTaskType, allPriority } = useSelector(
+  const { allProject, allTaskType, allPriority, allStatus } = useSelector(
     (state) => state.ProjectReducer
   );
   const { allUsers } = useSelector((state) => state.userReducer);
@@ -32,17 +44,22 @@ const CreateTask = () => {
     dispatch({ type: GET_ALL_PROJECT_SAGA });
     dispatch({ type: GET_ALL_TASKTYPE_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
+    dispatch({ type: GET_ALL_STATUS_SAGA });
     dispatch({ type: GET_ALL_USER_SAGA });
   }, []);
 
-  const handleChange = (value) => {
+  const handleChange2 = (value) => {
     console.log(`Selected: ${value}`);
   };
   return (
-    <div className="container">
+    <form className="container" onSubmit={handleSubmit}>
       <div className="form-group">
         <label style={{ fontWeight: "bold" }}>Project</label>
-        <select name="projectId" className="form-control">
+        <select
+          name="projectId"
+          className="form-control"
+          onChange={handleChange}
+        >
           {allProject.map((project, index) => {
             return (
               <option key={index} value={project.id}>
@@ -52,11 +69,23 @@ const CreateTask = () => {
           })}
         </select>
       </div>
+      <div className="form-group">
+        <label style={{ fontWeight: "bold" }}>Task Name</label>
+        <input
+          name="taskName"
+          className="form-control"
+          onChange={handleChange}
+        />
+      </div>
       <div className="row">
-        <div className="col-6">
+        <div className="col-4">
           <div className="form-group">
             <label style={{ fontWeight: "bold" }}>Task Type</label>
-            <select name="typeId" className="form-control">
+            <select
+              name="typeId"
+              className="form-control"
+              onChange={handleChange}
+            >
               {allTaskType.map((type, index) => {
                 return (
                   <option key={index} value={type.id}>
@@ -67,14 +96,36 @@ const CreateTask = () => {
             </select>
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-4">
           <div className="form-group">
             <label style={{ fontWeight: "bold" }}>Priority</label>
-            <select name="priorityId" className="form-control">
+            <select
+              name="priorityId"
+              className="form-control"
+              onChange={handleChange}
+            >
               {allPriority.map((p, index) => {
                 return (
                   <option key={index} value={p.priorityId}>
                     {p.priority}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+        <div className="col-4">
+          <div className="form-group">
+            <label style={{ fontWeight: "bold" }}>Status</label>
+            <select
+              name="statusId"
+              className="form-control"
+              onChange={handleChange}
+            >
+              {allStatus.map((s, index) => {
+                return (
+                  <option key={index} value={s.statusId}>
+                    {s.statusName}
                   </option>
                 );
               })}
@@ -91,7 +142,9 @@ const CreateTask = () => {
               size={"large"}
               placeholder="Please select"
               optionFilterProp="children"
-              onChange={handleChange}
+              onChange={(values) => {
+                setFieldValue("listUserAsign", values);
+              }}
               style={{ width: "100%" }}
             >
               {allUsers.map((user, index) => {
@@ -110,6 +163,7 @@ const CreateTask = () => {
               type="number"
               min="0"
               defaultValue="0"
+              onChange={handleChange}
             />
           </div>
           <div className="col-6">
@@ -144,6 +198,7 @@ const CreateTask = () => {
                       ...timeTracking,
                       timeTrackingSpent: e.target.value,
                     });
+                    setFieldValue("timeTrackingSpent", e.target.value);
                   }}
                 />
               </div>
@@ -160,6 +215,7 @@ const CreateTask = () => {
                       ...timeTracking,
                       timeTrackingRemaining: e.target.value,
                     });
+                    setFieldValue("timeTrackingRemaining", e.target.value);
                   }}
                 />
               </div>
@@ -191,11 +247,48 @@ const CreateTask = () => {
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           }}
-          //onBlur={submitHandler}
+          onChange={() => {
+            setFieldValue("description", editorRef.current.getContent());
+          }}
         />
       </div>
-    </div>
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
-export default CreateTask;
+const CreateTaskWithFormik = withFormik({
+  enableReinitialize: true,
+  mapPropsToValues: (props) => {
+    return {
+      taskName: "",
+      description: "",
+      statusId: props.allStatus[0]?.statusId,
+      originalEstimate: "",
+      timeTrackingSpent: 0,
+      timeTrackingRemaining: 0,
+      projectId: props.allProject[0]?.id,
+      typeId: props.allTaskType[0]?.id,
+      priorityId: props.allPriority[0]?.priorityId,
+      listUserAsign: [],
+    };
+  },
+
+  //validatate input values
+  validationSchema: Yup.object().shape({}),
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log(values);
+  },
+
+  displayName: "CreateTask",
+})(CreateTask);
+
+const mapStateToProps = (state) => ({
+  allProject: state.ProjectReducer.allProject,
+  allTaskType: state.ProjectReducer.allTaskType,
+  allPriority: state.ProjectReducer.allPriority,
+  allStatus: state.ProjectReducer.allStatus,
+});
+
+export default connect(mapStateToProps)(CreateTaskWithFormik);

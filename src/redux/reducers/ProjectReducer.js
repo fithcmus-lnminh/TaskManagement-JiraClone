@@ -2,6 +2,7 @@ import {
   EDIT_PROJECT,
   GET_ALL_PRIORITY,
   GET_ALL_PROJECT,
+  GET_ALL_STATUS,
   GET_ALL_TASKTYPE,
   GET_PROJECT_DETAIL,
   GET_PROJECT_LIST,
@@ -18,6 +19,7 @@ const initialState = {
   allProject: [],
   allTaskType: [],
   allPriority: [],
+  allStatus: [],
 };
 
 const getProjectInitialState = {
@@ -40,6 +42,9 @@ export const ProjectReducer = (state = initialState, action) => {
       return { ...state };
     case GET_ALL_PRIORITY:
       state.allPriority = action.allPriorityArr;
+      return { ...state };
+    case GET_ALL_STATUS:
+      state.allStatus = action.allStatusArr;
       return { ...state };
     default:
       return state;

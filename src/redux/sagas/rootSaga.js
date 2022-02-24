@@ -9,6 +9,7 @@ import {
   monitorGetAllProject,
   monitorGetAllTaskType,
   monitorGetAllPriority,
+  monitorGetAllStatus,
 } from "./ProjectSaga";
 import { monitorCategory } from "./ProjectCategorySaga";
 import {
@@ -34,5 +35,6 @@ export function* rootSaga() {
     monitorGetAllTaskType(),
     monitorGetAllPriority(),
     monitorGetAllUser(),
+    monitorGetAllStatus(),
   ]);
 }

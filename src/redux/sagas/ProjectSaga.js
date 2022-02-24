@@ -10,6 +10,8 @@ import {
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_PROJECT,
   GET_ALL_PROJECT_SAGA,
+  GET_ALL_STATUS,
+  GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE,
   GET_ALL_TASKTYPE_SAGA,
   GET_LIST_PROJECT_SAGA,
@@ -197,4 +199,20 @@ function* getAllPriority(action) {
 
 export function* monitorGetAllPriority(action) {
   yield takeLatest(GET_ALL_PRIORITY_SAGA, getAllPriority);
+}
+
+function* getAllStatus(action) {
+  try {
+    const { data, status } = yield call(() => projectService.getAllStatus());
+
+    if (status === 200) {
+      yield put({ type: GET_ALL_STATUS, allStatusArr: data.content });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorGetAllStatus() {
+  yield takeLatest(GET_ALL_STATUS_SAGA, getAllStatus);
 }

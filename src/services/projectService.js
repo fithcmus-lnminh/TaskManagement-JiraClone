@@ -24,6 +24,10 @@ class ProjectService extends baseService {
   getAllPriority = () => {
     return this.get("/Priority/getAll");
   };
+
+  getAllStatus = () => {
+    return this.get("/Status/getAll");
+  };
 }
 
 export const projectService = new ProjectService();
