@@ -1,5 +1,9 @@
 import { USER_LOGIN } from "../../utils/settingSystem";
-import { LOGGED_USER, SEARCH_USER } from "../consts/taskManagement";
+import {
+  GET_ALL_USER,
+  LOGGED_USER,
+  SEARCH_USER,
+} from "../consts/taskManagement";
 
 let userLogin = {};
 
@@ -10,6 +14,7 @@ if (localStorage.getItem(USER_LOGIN)) {
 const initialState = {
   userLogin,
   userSearch: [],
+  allUsers: [],
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -19,6 +24,9 @@ export const userReducer = (state = initialState, action) => {
       return { ...state };
     case SEARCH_USER:
       state.userSearch = action.userSearch;
+      return { ...state };
+    case GET_ALL_USER:
+      state.allUsers = action.allUsers;
       return { ...state };
     default:
       return state;

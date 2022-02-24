@@ -6,6 +6,7 @@ import {
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_PROJECT_SAGA,
   GET_ALL_TASKTYPE_SAGA,
+  GET_ALL_USER_SAGA,
 } from "../../redux/consts/taskManagement";
 
 const { Option } = Select;
@@ -25,11 +26,13 @@ const CreateTask = () => {
   const { allProject, allTaskType, allPriority } = useSelector(
     (state) => state.ProjectReducer
   );
+  const { allUsers } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
     dispatch({ type: GET_ALL_PROJECT_SAGA });
     dispatch({ type: GET_ALL_TASKTYPE_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
+    dispatch({ type: GET_ALL_USER_SAGA });
   }, []);
 
   const handleChange = (value) => {
@@ -87,11 +90,13 @@ const CreateTask = () => {
               mode="multiple"
               size={"large"}
               placeholder="Please select"
-              defaultValue={["a10", "c12"]}
+              optionFilterProp="children"
               onChange={handleChange}
               style={{ width: "100%" }}
             >
-              {children}
+              {allUsers.map((user, index) => {
+                return <Option key={user.userId}>{user.name}</Option>;
+              })}
             </Select>
             <label
               className=""

@@ -8,6 +8,8 @@ import {
 } from "redux-saga/effects";
 import {
   ADD_USER_TO_PROJECT_SAGA,
+  GET_ALL_USER,
+  GET_ALL_USER_SAGA,
   GET_LIST_PROJECT_SAGA,
   REMOVE_USER_FROM_PROJECT,
   USER_LOGIN_API,
@@ -92,4 +94,21 @@ function* removeUserFromProject(action) {
 
 export function* monitorRemoveUserFromProject() {
   yield takeLatest(REMOVE_USER_FROM_PROJECT, removeUserFromProject);
+}
+
+function* getAllUser(action) {
+  //Call API
+  try {
+    const { data, status } = yield call(() => userService.getAllUser());
+
+    if (status === 200) {
+      yield put({ type: GET_ALL_USER, allUsers: data.content });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* monitorGetAllUser() {
+  yield takeLatest(GET_ALL_USER_SAGA, getAllUser);
 }

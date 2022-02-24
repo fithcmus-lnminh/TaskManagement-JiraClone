@@ -16,6 +16,10 @@ class UserService extends baseService {
   removeUserFromProject = (userProject) => {
     return this.post("Project/removeUserFromProject", userProject);
   };
+
+  getAllUser = () => {
+    return this.get("/Users/getUser");
+  };
 }
 
 export const userService = new UserService();

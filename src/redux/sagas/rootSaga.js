@@ -13,6 +13,7 @@ import {
 import { monitorCategory } from "./ProjectCategorySaga";
 import {
   monitorAddUserToProject,
+  monitorGetAllUser,
   monitorLogin,
   monitorRemoveUserFromProject,
 } from "./taskManagement/UserSaga";
@@ -32,5 +33,6 @@ export function* rootSaga() {
     monitorGetAllProject(),
     monitorGetAllTaskType(),
     monitorGetAllPriority(),
+    monitorGetAllUser(),
   ]);
 }
