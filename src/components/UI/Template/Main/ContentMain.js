@@ -32,7 +32,7 @@ const ContentMain = (props) => {
                         className="block-left text-danger"
                         style={{ height: "2.25rem" }}
                       >
-                        <i class="fa fa-arrow-up"></i>
+                        <i className="fa fa-arrow-up"></i>
                       </div>
                     ) : (
                       ""
@@ -43,7 +43,7 @@ const ContentMain = (props) => {
                         className="block-left text-success"
                         style={{ height: "2.25rem" }}
                       >
-                        <i class="fa fa-arrow-down"></i>
+                        <i className="fa fa-arrow-down"></i>
                       </div>
                     ) : (
                       ""

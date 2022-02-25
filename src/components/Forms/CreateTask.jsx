@@ -85,6 +85,9 @@ const CreateTask = (props) => {
           className="form-control"
           onChange={handleChange}
         />
+        {errors.taskName && touched.taskName && (
+          <div className="text-danger">{errors.taskName}</div>
+        )}
       </div>
       <div className="row">
         <div className="col-4">
@@ -278,7 +281,7 @@ const CreateTaskWithFormik = withFormik({
       taskName: "",
       description: "",
       statusId: props.allStatus[0]?.statusId,
-      originalEstimate: "",
+      originalEstimate: 0,
       timeTrackingSpent: 0,
       timeTrackingRemaining: 0,
       projectId: props.allProject[0]?.id,
@@ -289,9 +292,12 @@ const CreateTaskWithFormik = withFormik({
   },
 
   //validatate input values
-  validationSchema: Yup.object().shape({}),
+  validationSchema: Yup.object().shape({
+    taskName: Yup.string().required("Task Name is required"),
+  }),
 
   handleSubmit: (values, { props, setSubmitting }) => {
+    console.log(values);
     props.dispatch({ type: CREATE_TASK_SAGA, task: values });
   },
 
