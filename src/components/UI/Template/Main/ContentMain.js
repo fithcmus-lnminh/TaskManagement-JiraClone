@@ -12,7 +12,7 @@ const ContentMain = (props) => {
         <div
           key={index}
           className="card"
-          style={{ width: "17rem", height: "auto" }}
+          style={{ width: "30%", height: "auto" }}
         >
           <div className="card-header">{taskList.statusName}</div>
           <ul className="list-group list-group-flush">

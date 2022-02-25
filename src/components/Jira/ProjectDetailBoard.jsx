@@ -22,7 +22,10 @@ const ProjectDetailBoard = () => {
 
   return (
     <Index>
-      <div className="main container" style={{ minHeight: "100vh" }}>
+      <div
+        className="main container-fluid mt-3 ms-3"
+        style={{ minHeight: "100vh", maxWidth: "80vw" }}
+      >
         <HeaderMain>Project Detail / {projectDetail.projectName}</HeaderMain>
         <InfoMain projectDetail={projectDetail} />
         <ContentMain projectDetail={projectDetail} />
