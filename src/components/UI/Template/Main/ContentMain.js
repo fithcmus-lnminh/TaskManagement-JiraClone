@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar } from "antd";
+import Modal from "../../Shared/Modal";
 
 const ContentMain = (props) => {
   const { projectDetail } = props;
@@ -20,8 +21,8 @@ const ContentMain = (props) => {
                 <li
                   key={index}
                   className="list-group-item"
-                  data-toggle="modal"
-                  data-target="#infoModal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#infoModal"
                   style={{ cursor: "pointer" }}
                 >
                   <h6>{task.taskName}</h6>

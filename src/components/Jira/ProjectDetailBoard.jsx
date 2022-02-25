@@ -6,6 +6,7 @@ import ContentMain from "../UI/Template/Main/ContentMain";
 import HeaderMain from "../UI/Template/Main/HeaderMain";
 import InfoMain from "../UI/Template/Main/InfoMain";
 import { GET_PROJECT_DETAIL_SAGA } from "../../redux/consts/taskManagement";
+import Modal from "../UI/Shared/Modal";
 
 const ProjectDetailBoard = () => {
   const projectDetail = useSelector(
@@ -25,6 +26,7 @@ const ProjectDetailBoard = () => {
         <HeaderMain>Project Detail / {projectDetail.projectName}</HeaderMain>
         <InfoMain projectDetail={projectDetail} />
         <ContentMain projectDetail={projectDetail} />
+        <Modal />
       </div>
     </Index>
   );

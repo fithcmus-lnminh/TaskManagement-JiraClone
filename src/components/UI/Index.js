@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from "./Shared/Modal";
 import Menu from "./Template/Menu";
 import Sidebar from "./Template/Sidebar";
 
