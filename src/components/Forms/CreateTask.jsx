@@ -9,6 +9,8 @@ import {
   GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
   GET_ALL_USER_SAGA,
+  GET_USER_BY_PROJECT,
+  GET_USER_BY_PROJECT_SAGA,
   SET_SUBMIT_EDIT_PROJECT,
 } from "../../redux/consts/taskManagement";
 import { withFormik } from "formik";
@@ -41,13 +43,13 @@ const CreateTask = (props) => {
     (state) => state.ProjectReducer
   );
   const { allUsers } = useSelector((state) => state.userReducer);
+  console.log("id", values.projectId);
 
   useEffect(() => {
     dispatch({ type: GET_ALL_PROJECT_SAGA });
     dispatch({ type: GET_ALL_TASKTYPE_SAGA });
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
     dispatch({ type: GET_ALL_STATUS_SAGA });
-    dispatch({ type: GET_ALL_USER_SAGA });
     dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFn: handleSubmit });
   }, []);
 
@@ -58,7 +60,14 @@ const CreateTask = (props) => {
         <select
           name="projectId"
           className="form-control"
-          onChange={handleChange}
+          onChange={(e) => {
+            console.log(e.target.value);
+            dispatch({
+              type: GET_USER_BY_PROJECT_SAGA,
+              projectId: e.target.value,
+            });
+            setFieldValue("projectId", e.target.value); //handleChange
+          }}
         >
           {allProject.map((project, index) => {
             return (
@@ -259,6 +268,12 @@ const CreateTask = (props) => {
 const CreateTaskWithFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: (props) => {
+    if (props.allProject.length > 0) {
+      props.dispatch({
+        type: GET_USER_BY_PROJECT_SAGA,
+        projectId: props.allProject[0].id,
+      });
+    }
     return {
       taskName: "",
       description: "",

@@ -1,6 +1,7 @@
 import { USER_LOGIN } from "../../utils/settingSystem";
 import {
   GET_ALL_USER,
+  GET_USER_BY_PROJECT,
   LOGGED_USER,
   SEARCH_USER,
 } from "../consts/taskManagement";
@@ -27,6 +28,9 @@ export const userReducer = (state = initialState, action) => {
       return { ...state };
     case GET_ALL_USER:
       state.allUsers = action.allUsers;
+      return { ...state };
+    case GET_USER_BY_PROJECT:
+      state.allUsers = action.userArr;
       return { ...state };
     default:
       return state;

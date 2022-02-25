@@ -6,7 +6,7 @@ class UserService extends baseService {
   }
 
   getUserByKeyword = (keyword) => {
-    return this.get(`/Users/getUser?keyword=${keyword}`);
+    return this.get(`Users/getUser?keyword=${keyword}`);
   };
 
   assignUserToProject = (userProject) => {
@@ -18,7 +18,11 @@ class UserService extends baseService {
   };
 
   getAllUser = () => {
-    return this.get("/Users/getUser");
+    return this.get("Users/getUser");
+  };
+
+  getUserByProjectId = (projectId) => {
+    return this.get(`Users/getUserByProjectId?idProject=${projectId}`);
   };
 }
 

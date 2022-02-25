@@ -11,6 +11,8 @@ import {
   GET_ALL_USER,
   GET_ALL_USER_SAGA,
   GET_LIST_PROJECT_SAGA,
+  GET_USER_BY_PROJECT,
+  GET_USER_BY_PROJECT_SAGA,
   REMOVE_USER_FROM_PROJECT,
   USER_LOGIN_API,
 } from "../../consts/taskManagement/index";
@@ -111,4 +113,26 @@ function* getAllUser(action) {
 
 export function* monitorGetAllUser() {
   yield takeLatest(GET_ALL_USER_SAGA, getAllUser);
+}
+
+function* getUserByProjectId(action) {
+  //Call API
+  try {
+    const { data, status } = yield call(() =>
+      userService.getUserByProjectId(action.projectId)
+    );
+
+    if (status === 200) {
+      yield put({ type: GET_USER_BY_PROJECT, userArr: data.content });
+    }
+  } catch (err) {
+    console.log(err.response?.data);
+    if (err.response?.data.statusCode === 404) {
+      yield put({ type: GET_USER_BY_PROJECT, userArr: [] });
+    }
+  }
+}
+
+export function* monitorGetUserByProjectId() {
+  yield takeLatest(GET_USER_BY_PROJECT_SAGA, getUserByProjectId);
 }
