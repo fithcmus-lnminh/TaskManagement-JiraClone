@@ -21,7 +21,7 @@ const ProjectDetailBoard = () => {
 
   return (
     <Index>
-      <div className="main">
+      <div className="main container" style={{ minHeight: "100vh" }}>
         <HeaderMain>Project Detail / {projectDetail.projectName}</HeaderMain>
         <InfoMain projectDetail={projectDetail} />
         <ContentMain projectDetail={projectDetail} />

@@ -18,7 +18,11 @@ const InfoMain = (props) => {
           {projectDetail.members?.map((user, index) => {
             return (
               <div className="avatar" key={index}>
-                <img src={user.avatar} alt="true" />
+                <img
+                  src={user.avatar}
+                  alt="true"
+                  style={{ width: "34.5px", height: "34.5px" }}
+                />
               </div>
             );
           })}

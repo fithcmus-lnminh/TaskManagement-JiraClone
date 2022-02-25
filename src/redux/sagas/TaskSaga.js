@@ -8,10 +8,10 @@ function* createTask(action) {
   try {
     const { status } = yield call(() => taskService.createTask(action.task));
     if (status === 200) {
+      yield put({ type: HIDE_DRAWER });
       navigate(`/project-detail/${action.task.projectId.toString()}`);
       openNotification("success", "Create Task Successfully");
     }
-    yield put({ type: HIDE_DRAWER });
   } catch (err) {
     openNotification(
       "error",

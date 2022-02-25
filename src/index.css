@@ -7,7 +7,7 @@
 }
 
 .jira {
-  height: 100vh;
+  height: auto;
   font-family: "Open Sans", sans-serif;
   font-weight: 300;
   display: flex;
@@ -105,7 +105,7 @@
 
 /* Menu */
 .menu {
-  height: 100%;
+  height: auto;
   min-width: 14.5%;
   max-width: 14.5%;
   background-color: #f4f5f7;
@@ -191,9 +191,6 @@
   font-size: 14px;
 }
 
-.main {
-  padding-left: 2%;
-}
 .main .header .breadcrumb {
   margin-bottom: 0;
   padding-left: 0px;
@@ -287,10 +284,6 @@
 
 .fa-bookmark {
   color: #5fb03e;
-}
-
-.fa-arrow-up {
-  color: #d85463;
 }
 
 .fa-check-square {

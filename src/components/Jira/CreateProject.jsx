@@ -33,7 +33,7 @@ const CreateProject = (props) => {
 
   return (
     <Index>
-      <div className="container w-50">
+      <div className="container w-50" style={{ height: "100vh" }}>
         <div className="header mt-3">
           <nav aria-label="breadcrumb">
             <ol
