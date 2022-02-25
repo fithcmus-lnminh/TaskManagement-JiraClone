@@ -1,6 +1,6 @@
 import { takeLatest, call, put, select } from "redux-saga/effects";
 import { projectService } from "../../services/projectService";
-import { taskService } from "../../services/taskService";
+import { appService } from "../../services/appService";
 import { userService } from "../../services/userService";
 import {
   CREATE_PROJECT_SAGA,
@@ -30,7 +30,7 @@ function* createProject(action) {
   //Call API
   try {
     const { status } = yield call(() =>
-      taskService.createProjectWithAuthorization(action.newProject)
+      appService.createProjectWithAuthorization(action.newProject)
     );
 
     const navigate = yield select((state) => state.navigateReducer.navigate);
@@ -50,7 +50,7 @@ export function* monitorCreateProject() {
 
 function* getListProject(action) {
   try {
-    const { data, status } = yield call(() => taskService.getListProject());
+    const { data, status } = yield call(() => appService.getListProject());
     console.log(data);
 
     if (status === 200) {
@@ -71,7 +71,7 @@ export function* monitorGetListProject() {
 function* editProject(action) {
   try {
     const { status } = yield call(() =>
-      taskService.editProject(action.editProject)
+      appService.editProject(action.editProject)
     );
 
     const navigate = yield select((state) => state.navigateReducer.navigate);

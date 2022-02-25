@@ -14,7 +14,7 @@ import {
   REMOVE_USER_FROM_PROJECT,
   USER_LOGIN_API,
 } from "../../consts/taskManagement/index";
-import { taskService } from "../../../services/taskService";
+import { appService } from "../../../services/appService";
 import { TOKEN, USER_LOGIN } from "../../../utils/settingSystem";
 import { LOGGED_USER } from "../../consts/taskManagement/index";
 import { userService } from "../../../services/userService";
@@ -25,7 +25,7 @@ function* loginSaga(action) {
   //Call API
   try {
     const { data, status } = yield call(() =>
-      taskService.login(action.userInfo)
+      appService.login(action.userInfo)
     );
 
     //Save on local storage

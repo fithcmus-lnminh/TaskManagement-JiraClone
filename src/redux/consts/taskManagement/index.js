@@ -30,3 +30,4 @@ export const GET_ALL_USER_SAGA = "GET_ALL_USER_SAGA";
 export const GET_ALL_USER = "GET_ALL_USER";
 export const GET_ALL_STATUS_SAGA = "GET_ALL_STATUS_SAGA";
 export const GET_ALL_STATUS = "GET_ALL_STATUS";
+export const CREATE_TASK_SAGA = "CREATE_TASK_SAGA";

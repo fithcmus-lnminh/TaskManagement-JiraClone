@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { taskService } from "../../services/taskService";
+import { appService } from "../../services/appService";
 import {
   GET_ALL_CATEGORY,
   GET_ALL_CATEGORY_SAGA,
@@ -8,9 +8,7 @@ import {
 //Manage saga action
 function* ProjectCategorySaga(action) {
   //Call API
-  const { data, status } = yield call(() =>
-    taskService.getAllProjectCategory()
-  );
+  const { data, status } = yield call(() => appService.getAllProjectCategory());
 
   yield put({
     type: GET_ALL_CATEGORY,

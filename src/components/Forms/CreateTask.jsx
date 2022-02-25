@@ -3,11 +3,13 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Select, Slider } from "antd";
 import { connect, useDispatch, useSelector } from "react-redux";
 import {
+  CREATE_TASK_SAGA,
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_PROJECT_SAGA,
   GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
   GET_ALL_USER_SAGA,
+  SET_SUBMIT_EDIT_PROJECT,
 } from "../../redux/consts/taskManagement";
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -46,11 +48,9 @@ const CreateTask = (props) => {
     dispatch({ type: GET_ALL_PRIORITY_SAGA });
     dispatch({ type: GET_ALL_STATUS_SAGA });
     dispatch({ type: GET_ALL_USER_SAGA });
+    dispatch({ type: SET_SUBMIT_EDIT_PROJECT, submitFn: handleSubmit });
   }, []);
 
-  const handleChange2 = (value) => {
-    console.log(`Selected: ${value}`);
-  };
   return (
     <form className="container" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -252,7 +252,6 @@ const CreateTask = (props) => {
           }}
         />
       </div>
-      <button type="submit">Submit</button>
     </form>
   );
 };
@@ -278,7 +277,7 @@ const CreateTaskWithFormik = withFormik({
   validationSchema: Yup.object().shape({}),
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    console.log(values);
+    props.dispatch({ type: CREATE_TASK_SAGA, task: values });
   },
 
   displayName: "CreateTask",

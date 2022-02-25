@@ -18,6 +18,7 @@ import {
   monitorLogin,
   monitorRemoveUserFromProject,
 } from "./taskManagement/UserSaga";
+import { monitorCreateTask } from "./TaskSaga";
 
 export function* rootSaga() {
   yield all([
@@ -36,5 +37,6 @@ export function* rootSaga() {
     monitorGetAllPriority(),
     monitorGetAllUser(),
     monitorGetAllStatus(),
+    monitorCreateTask(),
   ]);
 }
