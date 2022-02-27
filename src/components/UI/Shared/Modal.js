@@ -6,8 +6,13 @@ import {
   GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
 } from "../../../redux/consts/taskManagement";
-import { CHANGE_MODAL } from "../../../redux/consts/taskManagement/task";
+import {
+  CHANGE_ASSIGNESS,
+  CHANGE_MODAL,
+  REMOVE_ASSIGNEE,
+} from "../../../redux/consts/taskManagement/task";
 import { Editor } from "@tinymce/tinymce-react";
+import { CloseOutlined } from "@ant-design/icons";
 
 const Modal = () => {
   const { allStatus, allPriority, allTaskType } = useSelector(
@@ -17,7 +22,9 @@ const Modal = () => {
 
   const dispatch = useDispatch();
   const { taskDetailModal } = useSelector((state) => state.taskReducer);
-  console.log(taskDetailModal);
+  const projectDetail = useSelector(
+    (state) => state.ProjectReducer.projectDetail
+  );
 
   const [visibleEditor, setVisibleEditor] = useState(false);
 
@@ -51,32 +58,36 @@ const Modal = () => {
                   );
                 })}
               </select>
-              <span>{taskDetailModal.taskName}</span>
+              <span style={{ fontSize: "1.5rem" }}>
+                {taskDetailModal.taskName}
+              </span>
             </div>
-            <div style={{ display: "flex" }} className="task-click">
+            <div className="task-click d-flex align-items-c">
               <div>
-                <i className="fab fa-telegram-plane" />
+                <i className="fab fa-telegram-plane me-2" />
                 <span style={{ paddingRight: 20 }}>Give feedback</span>
               </div>
               <div>
-                <i className="fa fa-link" />
+                <i className="fa fa-link me-2" />
                 <span style={{ paddingRight: 20 }}>Copy link</span>
               </div>
               <i className="fa fa-trash-alt" style={{ cursor: "pointer" }} />
               <button
                 type="button"
-                className="close"
+                className="close btn pt-0 ms-4"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               >
-                <span aria-hidden="true">×</span>
+                <span aria-hidden="true">
+                  <CloseOutlined />
+                </span>
               </button>
             </div>
           </div>
           <div className="modal-body">
             <div className="container-fluid">
               <div className="row">
-                <div className="col-8">
+                <div className="col-7">
                   <p className="issue">
                     This is an issue of type:{" "}
                     {taskDetailModal.taskTypeDetail.taskType}
@@ -228,12 +239,12 @@ const Modal = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-4">
+                <div className="col-5">
                   <div className="status">
                     <h6>STATUS</h6>
                     <select
                       name="statusId"
-                      className="custom-select"
+                      className="form-control"
                       value={taskDetailModal.statusId}
                       onChange={(e) => handleChange(e)}
                     >
@@ -246,30 +257,80 @@ const Modal = () => {
                       })}
                     </select>
                   </div>
-                  <div className="assignees">
+                  <div className="assignees mt-3">
                     <h6>ASSIGNEES</h6>
-                    <div style={{ display: "flex" }}>
+                    <div className="row">
                       {taskDetailModal.assigness.map((user, index) => {
                         return (
-                          <div style={{ display: "flex" }} className="item" key={index}>
-                            <div className="avatar">
-                              <img src={user.avatar} alt="avt" />
+                          <div className="col-6 mb-2" key={index}>
+                            <div className="item me-0 d-flex align-items-center">
+                              <div className="avatar me-1">
+                                <img src={user.avatar} alt="avt" />
+                              </div>
+
+                              <p className="name">{user.name}</p>
+                              <p
+                                className="name"
+                                onClick={() => {
+                                  console.log("HEELO");
+                                  dispatch({
+                                    type: REMOVE_ASSIGNEE,
+                                    userId: user.id,
+                                  });
+                                }}
+                              >
+                                <i
+                                  className="fa fa-times"
+                                  style={{ marginLeft: 5, cursor: "pointer" }}
+                                />
+                              </p>
                             </div>
-                            <p className="name">
-                              {user.name}
-                              <i
-                                className="fa fa-times"
-                                style={{ marginLeft: 5 }}
-                              />
-                            </p>
                           </div>
                         );
                       })}
 
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <i className="fa fa-plus" style={{ marginRight: 5 }} />
-                        <span>Add more</span>
+                      <div className="col-6">
+                        <select
+                          className="form-control"
+                          style={{ width: "100%" }}
+                          placeholder="Please select"
+                          onBlur={(e) => {
+                            let selectedMember = projectDetail.members.find(
+                              (mem) => mem.userId == e.target.value
+                            );
+                            selectedMember = {
+                              ...selectedMember,
+                              id: selectedMember.userId,
+                            };
+                            dispatch({
+                              type: CHANGE_ASSIGNESS,
+                              user: selectedMember,
+                            });
+                          }}
+                        >
+                          {projectDetail.members
+                            ?.filter((mem) => {
+                              let index = taskDetailModal.assigness?.findIndex(
+                                (u) => u.id === mem.userId
+                              );
+                              if (index !== -1) {
+                                return false;
+                              }
+                              return true;
+                            })
+                            .map((mem, index) => {
+                              return (
+                                <option key={index} value={mem.userId}>
+                                  {mem.name}
+                                </option>
+                              );
+                            })}
+                        </select>
                       </div>
+                      <p>
+                        Click anywhere after choosing to add member to this
+                        project
+                      </p>
                     </div>
                   </div>
 
@@ -277,6 +338,7 @@ const Modal = () => {
                     <h6>PRIORITY</h6>
                     <select
                       name="priorityId"
+                      className="form-control"
                       value={taskDetailModal.priorityTask.priorityId}
                       onChange={(e) => {
                         handleChange(e);

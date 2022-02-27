@@ -202,13 +202,14 @@ const ProjectManagement = () => {
             {record.members?.slice(0, 3).map((member, index) => {
               return (
                 <Popover
+                  key={index}
                   placement="bottom"
                   title={"Member"}
                   content={() => {
                     return <UserTable record={record} start={0} end={3} />;
                   }}
                 >
-                  <Avatar key={index} src={member.avatar} alt="avt" />
+                  <Avatar src={member.avatar} alt="avt" />
                 </Popover>
               );
             })}
