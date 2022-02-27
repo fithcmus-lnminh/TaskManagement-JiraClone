@@ -73,6 +73,7 @@ const ContentMain = (props) => {
                           {task.assigness.slice(0, 3).map((mem, index) => {
                             return (
                               <img
+                                key={index}
                                 src={mem.avatar}
                                 alt="true"
                                 style={{ width: "34.5px", height: "34.5px" }}

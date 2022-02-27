@@ -172,7 +172,7 @@ const Modal = () => {
                     <h6>Comment</h6>
                     <div className="block-comment" style={{ display: "flex" }}>
                       <div className="avatar">
-                        <img src="./assets/img/download (1).jfif" alt />
+                        <img src="./assets/img/download (1).jfif" alt="avt" />
                       </div>
                       <div className="input-comment">
                         <input type="text" placeholder="Add a comment ..." />
@@ -203,7 +203,10 @@ const Modal = () => {
                           style={{ display: "flex" }}
                         >
                           <div className="avatar">
-                            <img src="./assets/img/download (1).jfif" alt />
+                            <img
+                              src="./assets/img/download (1).jfif"
+                              alt="avt"
+                            />
                           </div>
                           <div>
                             <p style={{ marginBottom: 5 }}>
@@ -248,9 +251,9 @@ const Modal = () => {
                     <div style={{ display: "flex" }}>
                       {taskDetailModal.assigness.map((user, index) => {
                         return (
-                          <div style={{ display: "flex" }} className="item">
+                          <div style={{ display: "flex" }} className="item" key={index}>
                             <div className="avatar">
-                              <img src={user.avatar} alt />
+                              <img src={user.avatar} alt="avt" />
                             </div>
                             <p className="name">
                               {user.name}

@@ -208,7 +208,7 @@ const ProjectManagement = () => {
                     return <UserTable record={record} start={0} end={3} />;
                   }}
                 >
-                  <Avatar key={index} src={member.avatar} alt="true" />
+                  <Avatar key={index} src={member.avatar} alt="avt" />
                 </Popover>
               );
             })}
