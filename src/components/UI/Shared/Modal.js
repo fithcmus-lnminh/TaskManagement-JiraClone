@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import parse from "html-react-parser";
 import {
@@ -7,14 +7,19 @@ import {
   GET_ALL_TASKTYPE_SAGA,
 } from "../../../redux/consts/taskManagement";
 import { CHANGE_MODAL } from "../../../redux/consts/taskManagement/task";
+import { Editor } from "@tinymce/tinymce-react";
 
 const Modal = () => {
   const { allStatus, allPriority, allTaskType } = useSelector(
     (state) => state.ProjectReducer
   );
+  const editorRef = useRef(null);
+
   const dispatch = useDispatch();
   const { taskDetailModal } = useSelector((state) => state.taskReducer);
   console.log(taskDetailModal);
+
+  const [visibleEditor, setVisibleEditor] = useState(false);
 
   const handleChange = (e) => {
     dispatch({
@@ -78,7 +83,61 @@ const Modal = () => {
                   </p>
                   <div className="description">
                     <p style={{ fontWeight: "bold" }}>Description</p>
-                    <p>{parse(taskDetailModal.description)}</p>
+                    {!visibleEditor ? (
+                      <span
+                        onClick={() => {
+                          setVisibleEditor(true);
+                        }}
+                      >
+                        {parse(taskDetailModal.description)}
+                      </span>
+                    ) : (
+                      <div>
+                        <Editor
+                          name="description"
+                          initialValue={taskDetailModal.description}
+                          onInit={(evt, editor) => (editorRef.current = editor)}
+                          init={{
+                            height: 200,
+                            menubar: false,
+                            plugins: [
+                              "advlist autolink lists link image charmap print preview anchor",
+                              "searchreplace visualblocks code fullscreen",
+                              "insertdatetime media table paste code help wordcount",
+                            ],
+                            toolbar:
+                              "undo redo | formatselect | " +
+                              "bold italic backcolor | alignleft aligncenter " +
+                              "alignright alignjustify | bullist numlist outdent indent | " +
+                              "removeformat | help",
+                            content_style:
+                              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                          }}
+                          //onBlur={submitHandler}
+                        />
+                        <button
+                          className="btn btn-primary my-3 me-2"
+                          onClick={() => {
+                            dispatch({
+                              type: CHANGE_MODAL,
+                              name: "description",
+                              value: editorRef.current.getContent(),
+                            });
+                            setVisibleEditor(false);
+                          }}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => {
+                            setVisibleEditor(false);
+                          }}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    )}
                   </div>
                   {/* <div style={{ fontWeight: 500, marginBottom: 10 }}>
                     Jira Software (software projects) issue types:
