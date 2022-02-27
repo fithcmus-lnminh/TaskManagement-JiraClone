@@ -19,7 +19,7 @@ import {
   monitorLogin,
   monitorRemoveUserFromProject,
 } from "./taskManagement/UserSaga";
-import { monitorCreateTask } from "./TaskSaga";
+import { monitorCreateTask, monitorGetTaskDetail } from "./TaskSaga";
 
 export function* rootSaga() {
   yield all([
@@ -40,5 +40,6 @@ export function* rootSaga() {
     monitorGetAllStatus(),
     monitorCreateTask(),
     monitorGetUserByProjectId(),
+    monitorGetTaskDetail(),
   ]);
 }

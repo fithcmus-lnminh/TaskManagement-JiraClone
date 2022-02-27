@@ -8,6 +8,10 @@ class TaskService extends baseService {
   createTask = (taskObj) => {
     return this.post("Project/createTask", taskObj);
   };
+
+  getTaskDetail = (taskId) => {
+    return this.get(`Project/getTaskDetail?taskId=${taskId}`);
+  };
 }
 
 export const taskService = new TaskService();

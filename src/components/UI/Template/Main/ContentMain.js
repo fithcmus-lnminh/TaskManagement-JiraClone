@@ -1,10 +1,13 @@
 import React from "react";
 import { Avatar } from "antd";
-import Modal from "../../Shared/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_TASK_DETAIL_SAGA } from "../../../../redux/consts/taskManagement/index";
 
 const ContentMain = (props) => {
   const { projectDetail } = props;
   console.log(projectDetail);
+
+  const dispatch = useDispatch();
 
   const renderCardTaskList = () => {
     return projectDetail.lstTask?.map((taskList, index) => {
@@ -24,13 +27,28 @@ const ContentMain = (props) => {
                   data-bs-toggle="modal"
                   data-bs-target="#infoModal"
                   style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    dispatch({
+                      type: GET_TASK_DETAIL_SAGA,
+                      taskId: task.taskId,
+                    });
+                  }}
                 >
                   <h6>{task.taskName}</h6>
                   <div className="block d-flex align-items-end">
-                    {task.priorityTask.priority === "High" ||
-                    task.priorityTask.priority === "Medium" ? (
+                    {task.priorityTask.priority === "High" ? (
                       <div
                         className="block-left text-danger"
+                        style={{ height: "2.25rem" }}
+                      >
+                        <i className="fa fa-arrow-up"></i>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {task.priorityTask.priority === "Medium" ? (
+                      <div
+                        className="block-left text-warning"
                         style={{ height: "2.25rem" }}
                       >
                         <i className="fa fa-arrow-up"></i>

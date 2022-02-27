@@ -1,14 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import parse from "html-react-parser";
+import {
+  GET_ALL_PRIORITY_SAGA,
+  GET_ALL_STATUS_SAGA,
+  GET_ALL_TASKTYPE_SAGA,
+} from "../../../redux/consts/taskManagement";
+import { CHANGE_MODAL } from "../../../redux/consts/taskManagement/task";
 
 const Modal = () => {
+  const { allStatus, allPriority, allTaskType } = useSelector(
+    (state) => state.ProjectReducer
+  );
+  const dispatch = useDispatch();
+  const { taskDetailModal } = useSelector((state) => state.taskReducer);
+  console.log(taskDetailModal);
+
+  const handleChange = (e) => {
+    dispatch({
+      type: CHANGE_MODAL,
+      name: e.target.name,
+      value: e.target.value,
+    });
+  };
+  useEffect(() => {
+    dispatch({ type: GET_ALL_STATUS_SAGA });
+    dispatch({ type: GET_ALL_PRIORITY_SAGA });
+    dispatch({ type: GET_ALL_TASKTYPE_SAGA });
+  }, []);
+
   return (
     <div className="modal fade" id="infoModal" tabIndex={-1} role="dialog">
       <div className="modal-dialog modal-info">
         <div className="modal-content">
           <div className="modal-header">
             <div className="task-title">
-              <i className="fa fa-bookmark" />
-              <span>TASK-217871</span>
+              <i className="fa fa-bookmark me-2" />
+
+              <select name="typeId" onChange={handleChange}>
+                {allTaskType.map((type, index) => {
+                  return (
+                    <option key={index} value={type.id}>
+                      {type.taskType}
+                    </option>
+                  );
+                })}
+              </select>
+              <span>{taskDetailModal.taskName}</span>
             </div>
             <div style={{ display: "flex" }} className="task-click">
               <div>
@@ -34,23 +72,15 @@ const Modal = () => {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-8">
-                  <p className="issue">This is an issue of type: Task.</p>
+                  <p className="issue">
+                    This is an issue of type:{" "}
+                    {taskDetailModal.taskTypeDetail.taskType}
+                  </p>
                   <div className="description">
-                    <p>Description</p>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Esse expedita quis vero tempora error sed reprehenderit
-                      sequi laborum, repellendus quod laudantium tenetur nobis
-                      modi reiciendis sint architecto. Autem libero quibusdam
-                      odit assumenda fugiat? Beatae aliquid labore vitae
-                      obcaecati sapiente asperiores quia amet id aut, natus quo
-                      molestiae quod voluptas, temporibus iusto laudantium sit
-                      tempora sequi. Rem, itaque id, fugit magnam asperiores
-                      voluptas consectetur aliquid vel error illum, delectus eum
-                      eveniet laudantium at repudiandae!
-                    </p>
+                    <p style={{ fontWeight: "bold" }}>Description</p>
+                    <p>{parse(taskDetailModal.description)}</p>
                   </div>
-                  <div style={{ fontWeight: 500, marginBottom: 10 }}>
+                  {/* <div style={{ fontWeight: 500, marginBottom: 10 }}>
                     Jira Software (software projects) issue types:
                   </div>
                   <div className="title">
@@ -77,8 +107,8 @@ const Modal = () => {
                         TASK <i className="fa fa-tasks" />
                       </h3>
                       <p>A task represents work that needs to be done</p>
-                    </div>
-                  </div>
+                    </div> */}
+                  {/* </div> */}
                   <div className="comment">
                     <h6>Comment</h6>
                     <div className="block-comment" style={{ display: "flex" }}>
@@ -139,58 +169,77 @@ const Modal = () => {
                 <div className="col-4">
                   <div className="status">
                     <h6>STATUS</h6>
-                    <select className="custom-select">
-                      <option selected>SELECTED FOR DEVELOPMENT</option>
-                      <option value={1}>One</option>
-                      <option value={2}>Two</option>
-                      <option value={3}>Three</option>
+                    <select
+                      name="statusId"
+                      className="custom-select"
+                      value={taskDetailModal.statusId}
+                      onChange={(e) => handleChange(e)}
+                    >
+                      {allStatus.map((status, index) => {
+                        return (
+                          <option key={index} value={status.statusId}>
+                            {status.statusName}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div className="assignees">
                     <h6>ASSIGNEES</h6>
                     <div style={{ display: "flex" }}>
-                      <div style={{ display: "flex" }} className="item">
-                        <div className="avatar">
-                          <img src="./assets/img/download (1).jfif" alt />
-                        </div>
-                        <p className="name">
-                          Pickle Rick
-                          <i
-                            className="fa fa-times"
-                            style={{ marginLeft: 5 }}
-                          />
-                        </p>
-                      </div>
+                      {taskDetailModal.assigness.map((user, index) => {
+                        return (
+                          <div style={{ display: "flex" }} className="item">
+                            <div className="avatar">
+                              <img src={user.avatar} alt />
+                            </div>
+                            <p className="name">
+                              {user.name}
+                              <i
+                                className="fa fa-times"
+                                style={{ marginLeft: 5 }}
+                              />
+                            </p>
+                          </div>
+                        );
+                      })}
+
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <i className="fa fa-plus" style={{ marginRight: 5 }} />
                         <span>Add more</span>
                       </div>
                     </div>
                   </div>
-                  <div className="reporter">
-                    <h6>REPORTER</h6>
-                    <div style={{ display: "flex" }} className="item">
-                      <div className="avatar">
-                        <img src="./assets/img/download (1).jfif" alt />
-                      </div>
-                      <p className="name">
-                        Pickle Rick
-                        <i className="fa fa-times" style={{ marginLeft: 5 }} />
-                      </p>
-                    </div>
-                  </div>
-                  <div className="priority" style={{ marginBottom: 20 }}>
+
+                  <div className="priority mt-3" style={{ marginBottom: 20 }}>
                     <h6>PRIORITY</h6>
-                    <select>
-                      <option>Highest</option>
-                      <option>Medium</option>
-                      <option>Low</option>
-                      <option>Lowest</option>
+                    <select
+                      name="priorityId"
+                      value={taskDetailModal.priorityTask.priorityId}
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
+                    >
+                      {allPriority.map((p, index) => {
+                        return (
+                          <option key={index} value={p.priorityId}>
+                            {p.priority}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div className="estimate">
                     <h6>ORIGINAL ESTIMATE (HOURS)</h6>
-                    <input type="text" className="estimate-hours" />
+                    <input
+                      name="originalEstimate"
+                      type="number"
+                      className="estimate-hours"
+                      defaultValue={taskDetailModal.originalEstimate}
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
+                    />
                   </div>
                   <div className="time-tracking">
                     <h6>TIME TRACKING</h6>
@@ -201,10 +250,16 @@ const Modal = () => {
                           <div
                             className="progress-bar"
                             role="progressbar"
-                            style={{ width: "25%" }}
-                            aria-valuenow={25}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
+                            style={{
+                              width: `${
+                                (Number(taskDetailModal.timeTrackingSpent) /
+                                  (Number(taskDetailModal.timeTrackingSpent) +
+                                    Number(
+                                      taskDetailModal.timeTrackingRemaining
+                                    ))) *
+                                100
+                              }%`,
+                            }}
                           />
                         </div>
                         <div
@@ -213,9 +268,32 @@ const Modal = () => {
                             justifyContent: "space-between",
                           }}
                         >
-                          <p className="logged">4h logged</p>
-                          <p className="estimate-time">12h estimated</p>
+                          <p className="logged">
+                            {taskDetailModal.timeTrackingSpent}h logged
+                          </p>
+                          <p className="estimate-time">
+                            {taskDetailModal.timeTrackingRemaining}h estimated
+                          </p>
                         </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <h6>CHANGE TIME TRACKING</h6>
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          name="timeTrackingSpent"
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <input
+                          type="number"
+                          min="0"
+                          className="form-control"
+                          name="timeTrackingRemaining"
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
                   </div>

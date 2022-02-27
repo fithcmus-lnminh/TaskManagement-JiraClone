@@ -318,7 +318,10 @@ const ProjectManagement = () => {
 
   return (
     <Index>
-      <div className="container" style={{ height: "100vh" }}>
+      <div
+        className="container mt-3 mx-3"
+        style={{ maxHeight: "100vh", minHeight: "100vh" }}
+      >
         <div className="header mt-1">
           <nav aria-label="breadcrumb">
             <ol
