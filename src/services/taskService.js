@@ -12,6 +12,10 @@ class TaskService extends baseService {
   getTaskDetail = (taskId) => {
     return this.get(`Project/getTaskDetail?taskId=${taskId}`);
   };
+
+  updateTask = (taskUpdate) => {
+    return this.post(`Project/updateTask`, taskUpdate);
+  };
 }
 
 export const taskService = new TaskService();

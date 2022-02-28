@@ -5,6 +5,7 @@ import {
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
+  HANDLE_CHANGE_POST_API,
 } from "../../../redux/consts/taskManagement";
 import {
   CHANGE_ASSIGNESS,
@@ -30,10 +31,16 @@ const Modal = () => {
 
   const handleChange = (e) => {
     dispatch({
-      type: CHANGE_MODAL,
+      type: HANDLE_CHANGE_POST_API,
+      actionType: CHANGE_MODAL,
       name: e.target.name,
       value: e.target.value,
     });
+    // dispatch({
+    //   type: CHANGE_MODAL,
+    //   name: e.target.name,
+    //   value: e.target.value,
+    // });
   };
   useEffect(() => {
     dispatch({ type: GET_ALL_STATUS_SAGA });
@@ -93,7 +100,14 @@ const Modal = () => {
                     {taskDetailModal.taskTypeDetail.taskType}
                   </p>
                   <div className="description">
-                    <p style={{ fontWeight: "bold" }}>Description</p>
+                    <p
+                      style={{ fontWeight: "bold" }}
+                      onClick={() => {
+                        setVisibleEditor(true);
+                      }}
+                    >
+                      Description
+                    </p>
                     {!visibleEditor ? (
                       <span
                         onClick={() => {
@@ -129,12 +143,18 @@ const Modal = () => {
                         <button
                           className="btn btn-primary my-3 me-2"
                           onClick={() => {
+                            setVisibleEditor(false);
                             dispatch({
-                              type: CHANGE_MODAL,
+                              type: HANDLE_CHANGE_POST_API,
+                              actionType: CHANGE_MODAL,
                               name: "description",
                               value: editorRef.current.getContent(),
                             });
-                            setVisibleEditor(false);
+                            // dispatch({
+                            //   type: CHANGE_MODAL,
+                            //   name: "description",
+                            //   value: editorRef.current.getContent(),
+                            // });
                           }}
                         >
                           Save
@@ -272,11 +292,15 @@ const Modal = () => {
                               <p
                                 className="name"
                                 onClick={() => {
-                                  console.log("HEELO");
                                   dispatch({
-                                    type: REMOVE_ASSIGNEE,
+                                    type: HANDLE_CHANGE_POST_API,
+                                    actionType: REMOVE_ASSIGNEE,
                                     userId: user.id,
                                   });
+                                  // dispatch({
+                                  //   type: REMOVE_ASSIGNEE,
+                                  //   userId: user.id,
+                                  // });
                                 }}
                               >
                                 <i
@@ -303,9 +327,14 @@ const Modal = () => {
                               id: selectedMember.userId,
                             };
                             dispatch({
-                              type: CHANGE_ASSIGNESS,
+                              type: HANDLE_CHANGE_POST_API,
+                              actionType: CHANGE_ASSIGNESS,
                               user: selectedMember,
                             });
+                            // dispatch({
+                            //   type: CHANGE_ASSIGNESS,
+                            //   user: selectedMember,
+                            // });
                           }}
                         >
                           {projectDetail.members
