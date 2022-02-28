@@ -9,6 +9,13 @@ export const appService = {
       data: userInfo,
     });
   },
+  register: (userInfo) => {
+    return Axios({
+      url: `${DOMAIN}/users/signup`,
+      method: "POST",
+      data: userInfo,
+    });
+  },
   getAllProjectCategory: () => {
     return Axios({
       url: `${DOMAIN}/ProjectCategory`,

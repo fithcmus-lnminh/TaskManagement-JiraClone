@@ -6,13 +6,15 @@ import {
   LockOutlined,
   FacebookOutlined,
   TwitterOutlined,
+  FormOutlined,
+  PhoneOutlined,
 } from "@ant-design/icons";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
-import { loginAction } from "../../redux/actions/taskAction";
+import { USER_REGISTER_SAGA } from "../../redux/consts/taskManagement";
 
-const Login = (props) => {
+const Register = (props) => {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
@@ -24,7 +26,7 @@ const Login = (props) => {
           style={{ height: window.innerHeight }}
         >
           <div className="w-75">
-            <h3 className="text-center mb-3">Login</h3>
+            <h3 className="text-center mb-3">Register</h3>
             <Input
               size="large"
               placeholder="Email"
@@ -47,6 +49,30 @@ const Login = (props) => {
             {errors.password && touched.password && (
               <div className="text-danger">{errors.password}</div>
             )}
+            <Input
+              type="text"
+              size="large"
+              name="name"
+              onChange={handleChange}
+              placeholder="Name"
+              className="mt-3"
+              prefix={<FormOutlined />}
+            />
+            {errors.name && touched.name && (
+              <div className="text-danger">{errors.name}</div>
+            )}
+            <Input
+              type="number"
+              size="large"
+              name="phoneNumber"
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className="mt-3"
+              prefix={<PhoneOutlined />}
+            />
+            {errors.phoneNumber && touched.phoneNumber && (
+              <div className="text-danger">{errors.phoneNumber}</div>
+            )}
           </div>
           <Button
             htmlType="submit"
@@ -54,11 +80,12 @@ const Login = (props) => {
             className="mt-4 w-75"
             style={{ backgroundColor: "rgb(102,117,223)", color: "#fff" }}
           >
-            Login
+            Register
           </Button>
 
           <h6 className="mt-3 mb-0">
-            Do not have an account? <a href="/register">Sign up</a>
+            Already have an account?
+            <a href="/login"> Log in</a>
           </h6>
         </div>
       </form>
@@ -66,19 +93,28 @@ const Login = (props) => {
   );
 };
 
-const LoginWithFormik = withFormik({
-  mapPropsToValues: () => ({ email: "", password: "" }),
+const RegisterWithFormik = withFormik({
+  mapPropsToValues: () => ({
+    email: "",
+    password: "",
+    name: "",
+    phoneNumber: 12345,
+  }),
 
   validationSchema: Yup.object().shape({
     email: Yup.string().required("Email is required").email("Invalid email"),
     password: Yup.string().min(6, "Password must has at least 6 characters"),
+    name: Yup.string().min(4, "Name must has at least 6 characters"),
+    phoneNumber: Yup.string()
+      .min(6, "Phone Number must has at least 6 numbers")
+      .max(12, "Phone Number must not exceed 12 numbers"),
   }), //validate from field
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    props.dispatch(loginAction(values.email, values.password));
+    props.dispatch({ type: USER_REGISTER_SAGA, userInfo: values });
   },
 
   displayName: "Login",
-})(Login);
+})(Register);
 
-export default connect()(LoginWithFormik); //LoginWithFormik will have props of redux
+export default connect()(RegisterWithFormik);

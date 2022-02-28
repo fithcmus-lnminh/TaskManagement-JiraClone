@@ -9,6 +9,7 @@ import CreateProject from "./components/Jira/CreateProject";
 import ProjectManagement from "./components/Jira/ProjectManagement";
 import Drawer from "./components/UI/Shared/Drawer";
 import ProjectDetailBoard from "./components/Jira/ProjectDetailBoard";
+import Register from "./components/Auth/Register";
 
 function App() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ProjectManagement />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/create-project" element={<CreateProject />} />
         <Route

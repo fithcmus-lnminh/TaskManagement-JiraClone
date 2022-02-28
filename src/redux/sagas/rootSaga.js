@@ -17,6 +17,7 @@ import {
   monitorGetAllUser,
   monitorGetUserByProjectId,
   monitorLogin,
+  monitorRegister,
   monitorRemoveUserFromProject,
 } from "./taskManagement/UserSaga";
 import {
@@ -28,6 +29,7 @@ import {
 export function* rootSaga() {
   yield all([
     monitorLogin(),
+    monitorRegister(),
     monitorCategory(),
     monitorCreateProject(),
     monitorGetListProject(),

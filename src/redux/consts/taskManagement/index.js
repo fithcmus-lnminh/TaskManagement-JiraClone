@@ -1,4 +1,5 @@
 export const USER_LOGIN_API = "USER_LOGIN_API";
+export const USER_REGISTER_SAGA = "USER_REGISTER_SAGA";
 export const LOGGED_USER = "LOGGED_USER";
 export const LOGGED_IN = "LOGGED_IN";
 export const LOGGED_OUT = "LOGGED_OUT";

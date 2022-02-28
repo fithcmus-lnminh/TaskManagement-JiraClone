@@ -16,6 +16,7 @@ import {
   LOGGED_IN,
   REMOVE_USER_FROM_PROJECT,
   USER_LOGIN_API,
+  USER_REGISTER_SAGA,
 } from "../../consts/taskManagement/index";
 import { appService } from "../../../services/appService";
 import { TOKEN, USER_LOGIN } from "../../../utils/settingSystem";
@@ -47,12 +48,36 @@ function* loginSaga(action) {
     const navigate = yield select((state) => state.navigateReducer.navigate);
     navigate("/");
   } catch (err) {
+    openNotification("error", "Invalid Email or Password");
     console.log(err.response.data);
   }
 }
 
 export function* monitorLogin() {
   yield takeLatest(USER_LOGIN_API, loginSaga);
+}
+
+function* register(action) {
+  //Call API
+  try {
+    const { data, status } = yield call(() =>
+      appService.register(action.userInfo)
+    );
+
+    const navigate = yield select((state) => state.navigateReducer.navigate);
+
+    if (status === 200) {
+      navigate("/login");
+      openNotification("success", "Register successfully!");
+    }
+  } catch (err) {
+    openNotification("error", "User already exists!");
+    console.log(err.response.data);
+  }
+}
+
+export function* monitorRegister() {
+  yield takeLatest(USER_REGISTER_SAGA, register);
 }
 
 function* addUserToProject(action) {
