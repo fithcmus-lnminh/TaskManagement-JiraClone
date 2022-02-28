@@ -95,6 +95,11 @@ function* handleChangePostApi(action) {
       });
     }
   } catch (err) {
+    openNotification(
+      "error",
+      "Permission denied!",
+      "All changes will not be saved"
+    );
     console.log(err);
   }
 }
