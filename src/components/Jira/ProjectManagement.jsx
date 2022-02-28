@@ -22,9 +22,13 @@ import { Popconfirm } from "antd";
 import { Avatar } from "antd";
 import { AutoComplete } from "antd";
 import UserTable from "../UI/Shared/UserTable";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const ProjectManagement = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.authReducer);
+  console.log(isLoggedIn);
+
   const dispatch = useDispatch();
   const [state, setState] = useState({
     filteredInfo: null,
@@ -42,6 +46,7 @@ const ProjectManagement = () => {
   const searchRef = useRef(null);
 
   useEffect(() => {
+    !isLoggedIn && navigate("/login");
     dispatch({ type: GET_LIST_PROJECT_SAGA });
   }, []);
 
@@ -337,9 +342,13 @@ const ProjectManagement = () => {
             </ol>
           </nav>
         </div>
-        <h3 className="mb-4" style={{ fontWeight: "bold" }}>
+        <h3 className="mb-2" style={{ fontWeight: "bold" }}>
           Project Management
         </h3>
+        <p className="mb-4">
+          Because API Website using HTTP method, please allow insecure content
+          for this website to get data. Thank you!
+        </p>
         <Space style={{ marginBottom: 16 }}>
           <Button onClick={clearAll}>Clear sorters</Button>
         </Space>

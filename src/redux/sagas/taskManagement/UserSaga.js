@@ -13,6 +13,7 @@ import {
   GET_LIST_PROJECT_SAGA,
   GET_USER_BY_PROJECT,
   GET_USER_BY_PROJECT_SAGA,
+  LOGGED_IN,
   REMOVE_USER_FROM_PROJECT,
   USER_LOGIN_API,
 } from "../../consts/taskManagement/index";
@@ -39,8 +40,10 @@ function* loginSaga(action) {
       userLogin: data.content,
     });
 
-    console.log(data);
-    //~useSelector
+    yield put({
+      type: LOGGED_IN,
+    });
+
     const navigate = yield select((state) => state.navigateReducer.navigate);
     navigate("/");
   } catch (err) {

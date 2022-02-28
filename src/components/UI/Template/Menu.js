@@ -1,9 +1,14 @@
+import { LogoutOutlined } from "@ant-design/icons";
 import React from "react";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { LOGGED_OUT } from "../../../redux/consts/taskManagement";
+import { TOKEN, USER_LOGIN } from "../../../utils/settingSystem";
 
 const Menu = () => {
   const userInfo = useSelector((state) => state.userReducer.userLogin);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <div className="menu">
@@ -63,6 +68,19 @@ const Menu = () => {
         <div>
           <i className="fa fa-box" />
           <span>Components</span>
+        </div>
+        <div
+          className="d-flex align-items-center"
+          style={{ position: "absolute", bottom: 0, left: "5rem" }}
+          onClick={() => {
+            localStorage.removeItem(TOKEN);
+            localStorage.removeItem(USER_LOGIN);
+            dispatch({ type: LOGGED_OUT });
+            navigate("/login");
+          }}
+        >
+          <LogoutOutlined />
+          <h6 className="ms-2 mb-0"> Logout</h6>
         </div>
       </div>
     </div>
