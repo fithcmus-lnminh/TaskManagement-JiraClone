@@ -1,21 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import parse from "html-react-parser";
 import {
+  GET_ALL_COMMENT_SAGA,
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
+  GET_TASK_DETAIL_SAGA,
   HANDLE_CHANGE_POST_API,
+  INSERT_COMMENT_SAGA,
 } from "../../../redux/consts/taskManagement";
 import {
   CHANGE_ASSIGNESS,
   CHANGE_MODAL,
+  CHANGE_TASK_ID,
   REMOVE_ASSIGNEE,
 } from "../../../redux/consts/taskManagement/task";
 import { Editor } from "@tinymce/tinymce-react";
 import { CloseOutlined } from "@ant-design/icons";
+import { USER_LOGIN } from "../../../utils/settingSystem";
+import * as Yup from "yup";
+import { withFormik } from "formik";
 
-const Modal = () => {
+const Modal = (props) => {
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = props;
   const { allStatus, allPriority, allTaskType } = useSelector(
     (state) => state.ProjectReducer
   );
@@ -26,10 +42,9 @@ const Modal = () => {
   const projectDetail = useSelector(
     (state) => state.ProjectReducer.projectDetail
   );
-
   const [visibleEditor, setVisibleEditor] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChangeValue = (e) => {
     dispatch({
       type: HANDLE_CHANGE_POST_API,
       actionType: CHANGE_MODAL,
@@ -48,6 +63,10 @@ const Modal = () => {
     dispatch({ type: GET_ALL_TASKTYPE_SAGA });
   }, []);
 
+  useEffect(() => {
+    setFieldValue("taskId", taskDetailModal.taskId);
+  }, [taskDetailModal.taskId]);
+
   return (
     <div className="modal fade" id="infoModal" tabIndex={-1} role="dialog">
       <div className="modal-dialog modal-info">
@@ -56,7 +75,7 @@ const Modal = () => {
             <div className="task-title">
               <i className="fa fa-bookmark me-2" />
 
-              <select name="typeId" onChange={handleChange}>
+              <select name="typeId" onChange={handleChangeValue}>
                 {allTaskType.map((type, index) => {
                   return (
                     <option key={index} value={type.id}>
@@ -200,62 +219,68 @@ const Modal = () => {
                     </div> */}
                   {/* </div> */}
                   <div className="comment">
-                    <h6>Comment</h6>
+                    <h6 style={{ fontWeight: "bold" }} className="mt-3">
+                      Comment
+                    </h6>
                     <div className="block-comment" style={{ display: "flex" }}>
                       <div className="avatar">
-                        <img src="./assets/img/download (1).jfif" alt="avt" />
+                        <img
+                          src={
+                            JSON.parse(localStorage.getItem(USER_LOGIN)).avatar
+                          }
+                          alt="avt"
+                        />
                       </div>
-                      <div className="input-comment">
-                        <input type="text" placeholder="Add a comment ..." />
-                        <p>
-                          <span style={{ fontWeight: 500, color: "gray" }}>
-                            Protip:
-                          </span>
-                          <span>
-                            press
-                            <span
-                              style={{
-                                fontWeight: "bold",
-                                background: "#ecedf0",
-                                color: "#b4bac6",
-                              }}
-                            >
-                              M
-                            </span>
-                            to comment
-                          </span>
-                        </p>
-                      </div>
+                      <form className="input-comment" onSubmit={handleSubmit}>
+                        <input
+                          type="text"
+                          name="contentComment"
+                          placeholder="Add a comment ..."
+                          onChange={handleChange}
+                        />
+                        {errors.contentComment && touched.contentComment && (
+                          <div className="text-danger">
+                            {errors.contentComment}
+                          </div>
+                        )}
+                      </form>
                     </div>
-                    <div className="lastest-comment">
-                      <div className="comment-item">
-                        <div
-                          className="display-comment"
-                          style={{ display: "flex" }}
-                        >
-                          <div className="avatar">
-                            <img
-                              src="./assets/img/download (1).jfif"
-                              alt="avt"
-                            />
-                          </div>
-                          <div>
-                            <p style={{ marginBottom: 5 }}>
-                              Lord Gaben <span>a month ago</span>
-                            </p>
-                            <p style={{ marginBottom: 5 }}>
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipisicing elit. Repellendus tempora ex
-                              voluptatum saepe ab officiis alias totam ad
-                              accusamus molestiae?
-                            </p>
-                            <div>
-                              <span style={{ color: "#929398" }}>Edit</span>•
-                              <span style={{ color: "#929398" }}>Delete</span>
+                    <div
+                      className="lastest-comment"
+                      style={{ maxHeight: "30rem", overflow: "auto" }}
+                    >
+                      {taskDetailModal.lstComment
+                        .slice(0)
+                        .reverse()
+                        .map((cmt, index) => {
+                          return (
+                            <div className="comment-item" key={index}>
+                              <div
+                                className="display-comment mt-3"
+                                style={{ display: "flex" }}
+                              >
+                                <div className="avatar">
+                                  <img src={cmt.avatar} alt="avt" />
+                                </div>
+                                <div>
+                                  <p style={{ marginBottom: 5 }}>{cmt.name}</p>
+                                  <p style={{ marginBottom: 5 }}>
+                                    {cmt.commentContent}
+                                  </p>
+                                  <div>
+                                    <span style={{ color: "#929398" }}>
+                                      Edit
+                                    </span>
+                                    •
+                                    <span style={{ color: "#929398" }}>
+                                      Delete
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
@@ -266,7 +291,7 @@ const Modal = () => {
                       name="statusId"
                       className="form-control"
                       value={taskDetailModal.statusId}
-                      onChange={(e) => handleChange(e)}
+                      onChange={(e) => handleChangeValue(e)}
                     >
                       {allStatus.map((status, index) => {
                         return (
@@ -370,7 +395,7 @@ const Modal = () => {
                       className="form-control"
                       value={taskDetailModal.priorityTask.priorityId}
                       onChange={(e) => {
-                        handleChange(e);
+                        handleChangeValue(e);
                       }}
                     >
                       {allPriority.map((p, index) => {
@@ -390,7 +415,7 @@ const Modal = () => {
                       className="estimate-hours"
                       defaultValue={taskDetailModal.originalEstimate}
                       onChange={(e) => {
-                        handleChange(e);
+                        handleChangeValue(e);
                       }}
                     />
                   </div>
@@ -436,7 +461,7 @@ const Modal = () => {
                         <input
                           className="form-control"
                           name="timeTrackingSpent"
-                          onChange={handleChange}
+                          onChange={handleChangeValue}
                         />
                       </div>
                       <div className="col-6">
@@ -445,7 +470,7 @@ const Modal = () => {
                           min="0"
                           className="form-control"
                           name="timeTrackingRemaining"
-                          onChange={handleChange}
+                          onChange={handleChangeValue}
                         />
                       </div>
                     </div>
@@ -464,4 +489,26 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+const ModalWithFormik = withFormik({
+  mapPropsToValues: (props) => {
+    const { taskDetailModal } = props;
+    return { taskId: taskDetailModal?.taskId, contentComment: "" };
+  },
+
+  validationSchema: Yup.object().shape({
+    contentComment: Yup.string().required("Comment can not be empty"),
+  }), //validate from field
+
+  handleSubmit: (values, { props, setSubmitting }) => {
+    props.dispatch({ type: INSERT_COMMENT_SAGA, cmtModel: values });
+    props.dispatch({ type: GET_TASK_DETAIL_SAGA, taskId: values.taskId });
+  },
+
+  displayName: "Modal",
+})(Modal);
+
+const mapStateToProps = (state) => ({
+  taskDetailModal: state.taskReducer.taskDetailModal,
+});
+
+export default connect(mapStateToProps)(ModalWithFormik);

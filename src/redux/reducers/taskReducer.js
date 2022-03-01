@@ -1,7 +1,9 @@
 import { GET_TASK_DETAIL } from "../consts/taskManagement";
 import {
   CHANGE_ASSIGNESS,
+  CHANGE_COMMENT,
   CHANGE_MODAL,
+  CHANGE_TASK_ID,
   CHANGE_TASK_MODAL,
   REMOVE_ASSIGNEE,
 } from "../consts/taskManagement/task";
@@ -37,6 +39,14 @@ export const taskReducer = (state = initialState, action) => {
     case GET_TASK_DETAIL:
       state.taskDetailModal = action.taskDetailModal;
       return { ...state };
+    case CHANGE_TASK_ID:
+      return {
+        ...state,
+        taskDetailModal: {
+          ...state.taskDetailModal,
+          taskId: action.taskId,
+        },
+      };
     case CHANGE_MODAL:
       return {
         ...state,
@@ -52,11 +62,16 @@ export const taskReducer = (state = initialState, action) => {
       ];
       return { ...state };
     case REMOVE_ASSIGNEE:
-      console.log(action);
       state.taskDetailModal.assigness = [
         ...state.taskDetailModal.assigness.filter(
           (a) => a.id !== action.userId
         ),
+      ];
+      return { ...state };
+    case CHANGE_COMMENT:
+      state.taskDetailModal.lstComment = [
+        ...state.taskDetailModal.lstComment,
+        action.comments,
       ];
       return { ...state };
     default:

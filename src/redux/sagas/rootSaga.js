@@ -25,6 +25,7 @@ import {
   monitorGetTaskDetail,
   monitorHandleChangePostApi,
 } from "./TaskSaga";
+import { monitorInsertComment } from "./commentSaga";
 
 export function* rootSaga() {
   yield all([
@@ -48,5 +49,6 @@ export function* rootSaga() {
     monitorGetUserByProjectId(),
     monitorGetTaskDetail(),
     monitorHandleChangePostApi(),
+    monitorInsertComment(),
   ]);
 }
