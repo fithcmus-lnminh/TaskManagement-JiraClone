@@ -51,7 +51,6 @@ export function* monitorCreateProject() {
 function* getListProject(action) {
   try {
     const { data, status } = yield call(() => appService.getListProject());
-    console.log(data);
 
     if (status === 200) {
       yield put({
@@ -137,8 +136,6 @@ function* getProjectDetail(action) {
     const { data, status } = yield call(() =>
       projectService.getProjectDetail(action.projectId)
     );
-
-    console.log("DATA", data);
 
     if (status === 200) {
       yield put({ type: GET_PROJECT_DETAIL, projectDetail: data.content });

@@ -5,7 +5,6 @@ import { GET_TASK_DETAIL_SAGA } from "../../../../redux/consts/taskManagement/in
 
 const ContentMain = (props) => {
   const { projectDetail } = props;
-  console.log(projectDetail);
 
   const dispatch = useDispatch();
 

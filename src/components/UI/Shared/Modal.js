@@ -2,13 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import parse from "html-react-parser";
 import {
+  DELETE_COMMENT_SAGA,
+  EDIT_COMMENT_SAGA,
   GET_ALL_COMMENT_SAGA,
   GET_ALL_PRIORITY_SAGA,
   GET_ALL_STATUS_SAGA,
   GET_ALL_TASKTYPE_SAGA,
   GET_TASK_DETAIL_SAGA,
   HANDLE_CHANGE_POST_API,
+  HIDE_INPUT_MODAL,
   INSERT_COMMENT_SAGA,
+  SWITCH_INPUT_MODAL,
 } from "../../../redux/consts/taskManagement";
 import {
   CHANGE_ASSIGNESS,
@@ -43,7 +47,7 @@ const Modal = (props) => {
     (state) => state.ProjectReducer.projectDetail
   );
   const [visibleEditor, setVisibleEditor] = useState(false);
-
+  const { editInput } = useSelector((state) => state.modalReducer);
   const handleChangeValue = (e) => {
     dispatch({
       type: HANDLE_CHANGE_POST_API,
@@ -237,6 +241,9 @@ const Modal = (props) => {
                           name="contentComment"
                           placeholder="Add a comment ..."
                           onChange={handleChange}
+                          onClick={() => {
+                            setFieldValue("submitType", "ADD");
+                          }}
                         />
                         {errors.contentComment && touched.contentComment && (
                           <div className="text-danger">
@@ -263,16 +270,72 @@ const Modal = (props) => {
                                   <img src={cmt.avatar} alt="avt" />
                                 </div>
                                 <div>
-                                  <p style={{ marginBottom: 5 }}>{cmt.name}</p>
-                                  <p style={{ marginBottom: 5 }}>
-                                    {cmt.commentContent}
+                                  <p
+                                    style={{
+                                      marginBottom: 5,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {cmt.name}
                                   </p>
+                                  <div style={{ marginBottom: 5 }}>
+                                    {editInput.isOpen &&
+                                    editInput.index === index ? (
+                                      <form
+                                        className="input-comment"
+                                        onSubmit={handleSubmit}
+                                        style={{ width: "28.5rem" }}
+                                      >
+                                        <input
+                                          defaultValue={cmt.commentContent}
+                                          name="contentComment"
+                                          onChange={handleChange}
+                                          onClick={() => {
+                                            setFieldValue("commentId", cmt.id);
+                                            setFieldValue("submitType", "EDIT");
+                                          }}
+                                        ></input>
+                                      </form>
+                                    ) : (
+                                      <p className="mb-0">
+                                        {cmt.commentContent}
+                                      </p>
+                                    )}
+                                  </div>
                                   <div>
-                                    <span style={{ color: "#929398" }}>
+                                    <span
+                                      className="me-1"
+                                      style={{
+                                        color: "#929398",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => {
+                                        dispatch({
+                                          type: SWITCH_INPUT_MODAL,
+                                          index: index,
+                                        });
+                                      }}
+                                    >
                                       Edit
                                     </span>
                                     •
-                                    <span style={{ color: "#929398" }}>
+                                    <span
+                                      className="ms-1"
+                                      style={{
+                                        color: "#929398",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => {
+                                        dispatch({
+                                          type: DELETE_COMMENT_SAGA,
+                                          commentId: cmt.id,
+                                        });
+                                        dispatch({
+                                          type: GET_TASK_DETAIL_SAGA,
+                                          taskId: taskDetailModal.taskId,
+                                        });
+                                      }}
+                                    >
                                       Delete
                                     </span>
                                   </div>
@@ -492,16 +555,27 @@ const Modal = (props) => {
 const ModalWithFormik = withFormik({
   mapPropsToValues: (props) => {
     const { taskDetailModal } = props;
-    return { taskId: taskDetailModal?.taskId, contentComment: "" };
+    return {
+      taskId: taskDetailModal?.taskId,
+      commentId: 0,
+      contentComment: "",
+      submitType: "",
+    };
   },
 
   validationSchema: Yup.object().shape({
-    contentComment: Yup.string().required("Comment can not be empty"),
+    //contentComment: Yup.string().required("Comment can not be empty"),
+    //editComment: Yup.string().required("Comment can not be empty"),
   }), //validate from field
 
   handleSubmit: (values, { props, setSubmitting }) => {
-    props.dispatch({ type: INSERT_COMMENT_SAGA, cmtModel: values });
-    props.dispatch({ type: GET_TASK_DETAIL_SAGA, taskId: values.taskId });
+    if (values.contentComment === "") return;
+    if (values.submitType === "ADD")
+      props.dispatch({ type: INSERT_COMMENT_SAGA, cmtModel: values });
+    else if (values.submitType === "EDIT") {
+      props.dispatch({ type: EDIT_COMMENT_SAGA, cmtModel: values });
+      props.dispatch({ type: HIDE_INPUT_MODAL });
+    }
   },
 
   displayName: "Modal",
@@ -509,6 +583,7 @@ const ModalWithFormik = withFormik({
 
 const mapStateToProps = (state) => ({
   taskDetailModal: state.taskReducer.taskDetailModal,
+  editInput: state.modalReducer.editInput,
 });
 
 export default connect(mapStateToProps)(ModalWithFormik);

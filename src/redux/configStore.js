@@ -8,6 +8,7 @@ import { getProjectReducer, ProjectReducer } from "./reducers/ProjectReducer";
 import { drawerReducer } from "./reducers/drawerReducer";
 import { taskReducer } from "./reducers/taskReducer";
 import { authReducer } from "./reducers/authReducer";
+import { modalReducer } from "./reducers/modalReducer";
 
 const middlewareSaga = createSagaMiddleware();
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   drawerReducer,
   taskReducer,
   authReducer,
+  modalReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(middlewareSaga));

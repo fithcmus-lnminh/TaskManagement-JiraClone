@@ -12,7 +12,6 @@ const ProjectDetailBoard = () => {
   const projectDetail = useSelector(
     (state) => state.ProjectReducer.projectDetail
   );
-  console.log(projectDetail);
   const dispatch = useDispatch();
   const { projectId } = useParams();
 

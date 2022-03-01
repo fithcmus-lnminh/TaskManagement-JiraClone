@@ -27,7 +27,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 const ProjectManagement = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.authReducer);
-  console.log(isLoggedIn);
 
   const dispatch = useDispatch();
   const [state, setState] = useState({
