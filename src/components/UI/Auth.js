@@ -24,7 +24,18 @@ const Auth = (props) => {
           backgroundImage: `url(https://picsum.photos/1000)`,
           backgroundSize: "100%",
         }}
-      ></Sider>
+      >
+        <p
+          style={{
+            backgroundColor: "black",
+            color: "#fff",
+            textAlign: "center",
+          }}
+        >
+          Because WebAPI using HTTP method, please allow insecure content
+          for this website to register, login and get data. Thank you!
+        </p>
+      </Sider>
       <Content>{props.children}</Content>
     </Layout>
   );
